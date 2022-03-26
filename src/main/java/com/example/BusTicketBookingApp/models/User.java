@@ -21,7 +21,7 @@ public class User {
 	@Column(nullable = false, unique = true)
 	private String email;
 	private String password;
-	@Column(unique = true)
+	@Column(name="mobile_numer", unique = true)
 	private String mobileNumber;
 	private String role;
 	@Column(name = "is_activated", columnDefinition = "boolean default false")
@@ -31,9 +31,19 @@ public class User {
 	
 //	created_at, updated_at
 	
+	
+	public User() {}
+	
+	public User(String firstName, String lastName, String email, String password) {
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.email = email;
+		this.password = password;
+		this.role = "user";
+	}
+	
 	public int getId() {
-		return id;
-		
+		return id;	
 	}
 	public void setId(int id) {
 		this.id = id;
