@@ -11,7 +11,6 @@ public class UsersController {
 	
 	@GetMapping("/new")
 	public String newUser() {
-		System.out.println("new");
 		return "/users/new.jsp";
 	}
 	

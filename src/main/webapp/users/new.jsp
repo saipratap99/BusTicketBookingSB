@@ -21,6 +21,18 @@
 </head>
 <body>
 	<div class="container-fluid">
+		<c:if test="${msg != null}">
+		<div class="position-absolute bottom-0 end-0">
+			<div class="toast align-items-center text-light bg-success show" role="alert" aria-live="assertive" aria-atomic="true">
+			  <div class="d-flex">
+			    <div class="toast-body">
+			    	${msg}
+			   </div>
+			    <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+			  </div>
+			</div>
+		</div>
+		</c:if>
 		<div class="navBar">
 			<nav class="navbar navbar-expand-lg navbar-light bg-light">
 			  <div class="container-fluid">
