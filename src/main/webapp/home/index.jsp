@@ -4,9 +4,9 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Insert title here</title>
+<title>Home</title>
 </head>
 <body>
-This is users index page
+	<h2>Welcome to Online Bus Ticket Booking</h2>
 </body>
 </html>
