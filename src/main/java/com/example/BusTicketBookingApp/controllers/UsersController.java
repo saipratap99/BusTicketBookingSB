@@ -21,12 +21,6 @@ public class UsersController {
 	@Autowired
 	UserRepo userRepo;
 	
-	@GetMapping("/")
-	public ModelAndView index() {
-		ModelAndView indexMV = new ModelAndView("/users/index.jsp");
-		return indexMV;
-	}
-	
 	@GetMapping("/new")
 	public ModelAndView newUser(String msg) {
 		ModelAndView newUserMV = new ModelAndView("/users/new.jsp");
@@ -59,7 +53,7 @@ public class UsersController {
 									@RequestParam String password) {
 		User user = userRepo.findByEmail(email);
 		
-		if(user != null && user.getPassword().equals(password))
+		if(user != null && user.getPassword().equals(password)) 
 			return new RedirectView("/");
 		
 		return new RedirectView("/users/login?msg=Invalid+email+or+password&status=danger&show=show");
