@@ -22,9 +22,13 @@ public class UsersController {
 	UserRepo userRepo;
 	
 	@GetMapping("/new")
-	public ModelAndView newUser(String msg) {
+	public ModelAndView newUser(String msg, String show, String status) {
 		ModelAndView newUserMV = new ModelAndView("/users/new.jsp");
+	
 		newUserMV.addObject("msg", msg);
+		newUserMV.addObject("show", show);
+		newUserMV.addObject("status", status);
+		
 		return newUserMV;
 	}
 	
@@ -35,16 +39,38 @@ public class UsersController {
 							   @RequestParam String password,
 							   @RequestParam String confirmPassword) {
 		User user = new User(firstName, lastName, email, password);
-		userRepo.save(user);
-		return newUser("User " + firstName + " has been added!");
+		
+		String msg = "", status = "danger";
+		
+		if(!firstName.matches("[a-zA-Z]{2,}"))
+			msg += "First name must be length of 2 and it should contains only Alpabets.</br>";
+		
+		else if(!email.matches("[a-zA-Z0-9]+[@]{1}[a-zA-Z]+[.][a-zA-Z]{2,3}"))
+			msg += "Email must be valid.</br>";
+		
+		else if(userRepo.existsByEmail(email))
+			msg += "Email already exsits.</br>";
+		
+		else if(!password.equals(confirmPassword))
+			msg += "Passwords should match.</br>";
+		
+		else {
+			userRepo.save(user);
+			msg += "User " + firstName + " has been added!";
+			status = "success";
+		}
+		
+		return newUser(msg, "show", status);
 	}
 	
 	@GetMapping("/login")
 	public ModelAndView newLogin(String msg, String status, String show) {
 		ModelAndView newUserLoginMV = new ModelAndView("/users/login.jsp");
+		
 		newUserLoginMV.addObject("msg", msg);
 		newUserLoginMV.addObject("show", show);
 		newUserLoginMV.addObject("status", status);
+
 		return newUserLoginMV;
 	}
 	

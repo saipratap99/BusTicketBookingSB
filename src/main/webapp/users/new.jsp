@@ -23,7 +23,7 @@
 	<div class="container-fluid">
 		<c:if test="${msg != null}">
 		<div class="position-absolute bottom-0 end-0">
-			<div class="toast align-items-center text-light bg-success show" role="alert" aria-live="assertive" aria-atomic="true">
+			<div class="toast align-items-center text-light bg-${status}  ${show}" role="alert" aria-live="assertive" aria-atomic="true">
 			  <div class="d-flex">
 			    <div class="toast-body">
 			    	${msg}
