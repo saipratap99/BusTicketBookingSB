@@ -46,9 +46,11 @@ public class UsersController {
 	}
 	
 	@GetMapping("/login")
-	public ModelAndView newLogin(String msg) {
+	public ModelAndView newLogin(String msg, String status, String show) {
 		ModelAndView newUserLoginMV = new ModelAndView("/users/login.jsp");
 		newUserLoginMV.addObject("msg", msg);
+		newUserLoginMV.addObject("show", show);
+		newUserLoginMV.addObject("status", status);
 		return newUserLoginMV;
 	}
 	
@@ -58,8 +60,9 @@ public class UsersController {
 		User user = userRepo.findByEmail(email);
 		
 		if(user != null && user.getPassword().equals(password))
-			return new RedirectView("/users/");
-		return new RedirectView("/users/login");
+			return new RedirectView("/");
+		
+		return new RedirectView("/users/login?msg=Invalid+email+or+password&status=danger&show=show");
 	}
 	
 
