@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.ModelAndViewDefiningException;
+import org.springframework.web.servlet.view.RedirectView;
 
 import com.example.BusTicketBookingApp.daos.UserRepo;
 import com.example.BusTicketBookingApp.models.User;
@@ -18,6 +20,12 @@ public class UsersController {
 	
 	@Autowired
 	UserRepo userRepo;
+	
+	@GetMapping("/")
+	public ModelAndView index() {
+		ModelAndView indexMV = new ModelAndView("/users/index.jsp");
+		return indexMV;
+	}
 	
 	@GetMapping("/new")
 	public ModelAndView newUser(String msg) {
@@ -36,4 +44,26 @@ public class UsersController {
 		userRepo.save(user);
 		return newUser("User " + firstName + " has been added!");
 	}
+	
+	@GetMapping("/login")
+	public ModelAndView newLogin(String msg) {
+		ModelAndView newUserLoginMV = new ModelAndView("/users/login.jsp");
+		newUserLoginMV.addObject("msg", msg);
+		return newUserLoginMV;
+	}
+	
+	@PostMapping("/login")
+	public RedirectView authenticate(@RequestParam String email,
+									@RequestParam String password) {
+		User user = userRepo.findByEmail(email);
+		
+		if(user != null && user.getPassword().equals(password))
+			return new RedirectView("/users/");
+		return new RedirectView("/users/login");
+	}
+	
+
+	
+	
+	
 }
