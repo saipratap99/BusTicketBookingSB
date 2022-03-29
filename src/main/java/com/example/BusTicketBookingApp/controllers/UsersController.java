@@ -38,6 +38,7 @@ public class UsersController {
 							   @RequestParam String email,
 							   @RequestParam String password,
 							   @RequestParam String confirmPassword) {
+		
 		User user = new User(firstName, lastName, email, password);
 		
 		String msg = "", status = "danger";
@@ -77,6 +78,7 @@ public class UsersController {
 	@PostMapping("/login")
 	public RedirectView authenticate(@RequestParam String email,
 									@RequestParam String password) {
+		
 		User user = userRepo.findByEmail(email);
 		
 		if(user != null && user.getPassword().equals(password)) 
