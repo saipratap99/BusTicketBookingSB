@@ -1,6 +1,15 @@
 package com.example.BusTicketBookingApp.controllers;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -11,7 +20,9 @@ import org.springframework.web.servlet.ModelAndViewDefiningException;
 import org.springframework.web.servlet.view.RedirectView;
 
 import com.example.BusTicketBookingApp.daos.UserRepo;
+import com.example.BusTicketBookingApp.models.AuthenticationResponse;
 import com.example.BusTicketBookingApp.models.User;
+import com.example.BusTicketBookingApp.utils.JwtUtil;
 
 @Controller
 @RequestMapping("/users")
@@ -20,6 +31,16 @@ public class UsersController {
 	
 	@Autowired
 	UserRepo userRepo;
+	
+	@Autowired
+	AuthenticationManager authenticationManager;
+	
+	@Autowired
+	UserDetailsService userDetailsService;
+	
+	@Autowired
+	JwtUtil jwtUtil;
+	
 	
 	@GetMapping("/new")
 	public ModelAndView newUser(String msg, String show, String status) {
@@ -76,15 +97,33 @@ public class UsersController {
 	}
 	
 	@PostMapping("/login")
-	public RedirectView authenticate(@RequestParam String email,
-									@RequestParam String password) {
+	public String authenticate(@RequestParam String email,
+									@RequestParam String password,
+									HttpServletResponse resp) {
 		
-		User user = userRepo.findByEmail(email);
 		
-		if(user != null && user.getPassword().equals(password)) 
-			return new RedirectView("/");
+		try {
+			authenticationManager.authenticate(
+				new UsernamePasswordAuthenticationToken(email, password)	
+			);
+			
+			UserDetails userDetails = userDetailsService.loadUserByUsername(email);
+			String jwt = jwtUtil.generateToken(userDetails);
+			
+			Cookie cookie = new Cookie("jwt",jwt);
+			cookie.setPath("/");
+			cookie.setMaxAge(100000);
+			cookie.setSecure(false);
+			cookie.setHttpOnly(true);
+			resp.addCookie(cookie);
+			
+			return "redirect:/";
+			
+		}catch(BadCredentialsException e) {
+			return "redirect:/users/login?msg=Invalid+email+or+password&status=danger&show=show";
+		}
+			
 		
-		return new RedirectView("/users/login?msg=Invalid+email+or+password&status=danger&show=show");
 	}
 	
 

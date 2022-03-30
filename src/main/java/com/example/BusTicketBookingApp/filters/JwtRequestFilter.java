@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -30,20 +31,23 @@ public class JwtRequestFilter extends OncePerRequestFilter{
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
-		String authorizationHeader = request.getHeader("Authorization");
 		
+		String authorizationHeader = null; 
 		String username = null;
 		String jwt = null;
 		
-		System.out.println("Inside filter");
+//		authorizationHeader = request.getHeader("Authorization");
+		for(Cookie cookie: request.getCookies()) {
+			if(cookie.getName().equalsIgnoreCase("jwt"))
+				authorizationHeader = "Bearer " + cookie.getValue();
+		}
+		
+		
 		if(authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
 			jwt = authorizationHeader.substring(7);
 			username = jwtUtil.extractUsername(jwt);
 		}
 		
-		System.out.println(jwt + "  " + username);
-		
-		System.out.println(SecurityContextHolder.getContext().getAuthentication());
 		
 		if(username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 			UserDetails userDetails = userDetailsService.loadUserByUsername(username);
@@ -53,7 +57,7 @@ public class JwtRequestFilter extends OncePerRequestFilter{
 						null,
 						userDetails.getAuthorities()
 				);
-				System.out.println("validated");
+				
 				usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 				SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
 			}

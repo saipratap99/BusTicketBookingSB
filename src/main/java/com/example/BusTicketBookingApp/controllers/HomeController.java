@@ -37,8 +37,7 @@ public class HomeController {
 	
 	@GetMapping("/")
 	public ModelAndView index(HttpServletRequest req) {
-//		HttpSession session = req.getSession();
-		
+
 		ModelAndView indexView = new ModelAndView("/home/index.jsp");
 		return indexView;
 	}
