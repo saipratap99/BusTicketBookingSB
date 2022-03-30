@@ -40,7 +40,7 @@ public class User {
 		this.lastName = lastName;
 		this.email = email;
 		this.password = password;
-		this.role = "user";
+		this.role = "ROLE_USER";
 	}
 	
 	public int getId() {
