@@ -22,6 +22,8 @@ import org.springframework.web.servlet.view.RedirectView;
 import com.example.BusTicketBookingApp.daos.UserRepo;
 import com.example.BusTicketBookingApp.models.AuthenticationResponse;
 import com.example.BusTicketBookingApp.models.User;
+import com.example.BusTicketBookingApp.services.CookieService;
+import com.example.BusTicketBookingApp.services.UserService;
 import com.example.BusTicketBookingApp.utils.JwtUtil;
 
 @Controller
@@ -41,6 +43,11 @@ public class UsersController {
 	@Autowired
 	JwtUtil jwtUtil;
 	
+	@Autowired
+	UserService userService;
+	
+	@Autowired
+	CookieService cookieService;
 	
 	@GetMapping("/new")
 	public ModelAndView newUser(String msg, String show, String status) {
@@ -77,7 +84,7 @@ public class UsersController {
 			msg += "Passwords should match.</br>";
 		
 		else {
-			userRepo.save(user);
+			userService.save(user);
 			msg += "User " + firstName + " has been added!";
 			status = "success";
 		}
@@ -110,12 +117,7 @@ public class UsersController {
 			UserDetails userDetails = userDetailsService.loadUserByUsername(email);
 			String jwt = jwtUtil.generateToken(userDetails);
 			
-			Cookie cookie = new Cookie("jwt",jwt);
-			cookie.setPath("/");
-			cookie.setMaxAge(100000);
-			cookie.setSecure(false);
-			cookie.setHttpOnly(true);
-			resp.addCookie(cookie);
+			resp.addCookie(cookieService.getJwtCookie(jwt));
 			
 			return "redirect:/";
 			
