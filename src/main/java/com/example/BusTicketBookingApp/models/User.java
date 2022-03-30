@@ -23,6 +23,7 @@ public class User {
 	private String password;
 	@Column(name="mobile_numer", unique = true)
 	private String mobileNumber;
+	@Column(columnDefinition = "varchar(50) default 'ROLE_USER'")
 	private String role;
 	@Column(name = "is_activated", columnDefinition = "boolean default false")
 	private boolean isActivated;
