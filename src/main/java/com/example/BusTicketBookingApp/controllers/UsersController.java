@@ -1,15 +1,17 @@
 package com.example.BusTicketBookingApp.controllers;
 
-import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,6 +35,7 @@ public class UsersController {
 	
 	@Autowired
 	UserRepo userRepo;
+	
 	
 	@Autowired
 	AuthenticationManager authenticationManager;
@@ -93,42 +96,51 @@ public class UsersController {
 	}
 	
 	@GetMapping("/login")
-	public ModelAndView newLogin(String msg, String status, String show) {
+	public ModelAndView newLogin(String msg, String status, String show, HttpSession session) {
 		ModelAndView newUserLoginMV = new ModelAndView("/users/login.jsp");
 		
 		newUserLoginMV.addObject("msg", msg);
 		newUserLoginMV.addObject("show", show);
 		newUserLoginMV.addObject("status", status);
-
+		System.out.println("Session:" + session.getAttribute("SESSION"));
 		return newUserLoginMV;
 	}
 	
 	@PostMapping("/login")
 	public String authenticate(@RequestParam String email,
 									@RequestParam String password,
-									HttpServletResponse resp) {
+									HttpServletResponse resp, HttpServletRequest request) {
 		
 		
 		try {
+			
+			// authenticate if credentials are matching
 			authenticationManager.authenticate(
 				new UsernamePasswordAuthenticationToken(email, password)	
 			);
 			
+			// if matched gets the UserDetails object 
 			UserDetails userDetails = userDetailsService.loadUserByUsername(email);
-			String jwt = jwtUtil.generateToken(userDetails);
+
+//			String jwt = jwtUtil.generateToken(userDetails);
+//			resp.addCookie(cookieService.getJwtCookie(jwt));
 			
-			resp.addCookie(cookieService.getJwtCookie(jwt));
+			UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
+					userDetails,
+					null,
+					userDetails.getAuthorities()
+			);
+			
+			usernamePasswordAuthenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+			SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
 			
 			return "redirect:/";
 			
 		}catch(BadCredentialsException e) {
 			return "redirect:/users/login?msg=Invalid+email+or+password&status=danger&show=show";
 		}
-			
 		
 	}
-	
-
 	
 	
 	
