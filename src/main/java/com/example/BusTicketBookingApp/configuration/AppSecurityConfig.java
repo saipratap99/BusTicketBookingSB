@@ -17,6 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.example.BusTicketBookingApp.filters.JwtRequestFilter;
+import com.example.BusTicketBookingApp.filters.SessionRequestFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -27,6 +28,9 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Autowired
 	JwtRequestFilter jwtRequestFilter;
+	
+	@Autowired
+	SessionRequestFilter sessionRequestFilter;
 	
 	// Authentication
 	@Override
@@ -49,6 +53,7 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
 			.authenticated();
 		
 		http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+		http.addFilterBefore(sessionRequestFilter, UsernamePasswordAuthenticationFilter.class);
 		
 	}
 	
