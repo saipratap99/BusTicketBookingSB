@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class CookieService {
+	
 	public Cookie getJwtCookie(String token) {
 		Cookie cookie = new Cookie("jwt", token);
 		cookie.setPath("/");
@@ -14,4 +15,5 @@ public class CookieService {
 		cookie.setHttpOnly(true);
 		return cookie;
 	}
+	
 }
