@@ -1,5 +1,8 @@
 package com.example.BusTicketBookingApp.controllers;
 
+import java.io.IOException;
+import java.security.Principal;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -53,7 +56,9 @@ public class UsersController {
 	CookieService cookieService;
 	
 	@GetMapping("/new")
-	public ModelAndView newUser(String msg, String show, String status) {
+	public ModelAndView newUser(String msg, String show, String status, Principal principal, HttpServletResponse response) throws IOException {
+		if(principal != null)
+			response.sendRedirect("/");
 		ModelAndView newUserMV = new ModelAndView("/users/new.jsp");
 	
 		newUserMV.addObject("msg", msg);
@@ -68,7 +73,9 @@ public class UsersController {
 							   @RequestParam String lastName,
 							   @RequestParam String email,
 							   @RequestParam String password,
-							   @RequestParam String confirmPassword) {
+							   @RequestParam String confirmPassword, 
+							   HttpServletResponse response,
+							   Principal principal) throws IOException {
 		
 		User user = new User(firstName, lastName, email, password);
 		
@@ -92,7 +99,7 @@ public class UsersController {
 			status = "success";
 		}
 		
-		return newUser(msg, "show", status);
+		return newUser(msg, "show", status,principal, response);
 	}
 	
 	@GetMapping("/login")

@@ -1,5 +1,8 @@
 package com.example.BusTicketBookingApp.controllers;
 
+import java.security.Principal;
+import java.util.Arrays;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -36,9 +39,10 @@ public class HomeController {
 	
 	
 	@GetMapping("/")
-	public ModelAndView index(HttpServletRequest req, HttpSession session) {
-
+	public ModelAndView index(HttpServletRequest req, HttpSession session, Principal principal) {
+		
 		ModelAndView indexView = new ModelAndView("/home/index.jsp");
+		System.out.println(principal.getName());
 		return indexView;
 	}
 	
