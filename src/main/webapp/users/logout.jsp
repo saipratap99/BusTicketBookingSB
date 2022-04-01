@@ -23,7 +23,7 @@
 	<div class="container-fluid">
 		Click logout button to logout!
 		<form method="post" action="logout">
-		  <button type="submit" class="btn btn-primary">Submit</button>
+		  <button type="submit" class="btn btn-primary">Logout</button>
 		</form>
 	</div>
 </body>

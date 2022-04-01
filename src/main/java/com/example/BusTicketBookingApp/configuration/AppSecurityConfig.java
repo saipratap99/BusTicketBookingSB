@@ -1,6 +1,11 @@
 package com.example.BusTicketBookingApp.configuration;
 
+import java.io.IOException;
+
 import javax.servlet.Filter;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -10,10 +15,14 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.example.BusTicketBookingApp.filters.JwtRequestFilter;
@@ -50,7 +59,20 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
 			.antMatchers("/authenticate","/users/*")
 			.permitAll()
 			.anyRequest()
-			.authenticated();
+			.authenticated()
+			.and()
+			.sessionManagement()
+			.sessionCreationPolicy(SessionCreationPolicy.ALWAYS);
+		
+		
+		http.exceptionHandling().authenticationEntryPoint(new AuthenticationEntryPoint() {
+			
+			@Override
+			public void commence(HttpServletRequest request, HttpServletResponse response,
+					AuthenticationException authException) throws IOException, ServletException {
+					response.sendRedirect("/users/login?msg=Please+login&status=danger&show=show");
+			}
+		});
 		
 		http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 		http.addFilterBefore(sessionRequestFilter, UsernamePasswordAuthenticationFilter.class);
