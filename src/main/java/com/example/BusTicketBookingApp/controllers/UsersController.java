@@ -102,7 +102,7 @@ public class UsersController {
 		newUserLoginMV.addObject("msg", msg);
 		newUserLoginMV.addObject("show", show);
 		newUserLoginMV.addObject("status", status);
-		System.out.println("Session:" + session.getAttribute("SESSION"));
+		
 		return newUserLoginMV;
 	}
 	
@@ -142,6 +142,15 @@ public class UsersController {
 		
 	}
 	
+	@GetMapping("/logout")
+	public ModelAndView logOut() {
+		ModelAndView logOutModelAndView = new ModelAndView("/users/logout.jsp");
+		return logOutModelAndView;
+	}
 	
-	
+	@PostMapping("/logout")
+	public String deleteSession(HttpSession session, HttpServletRequest request) {
+		SecurityContextHolder.getContext().setAuthentication(null);
+		return "redirect:/users/login?msg=User+logged+out&status=success&show=show";
+	}
 }
