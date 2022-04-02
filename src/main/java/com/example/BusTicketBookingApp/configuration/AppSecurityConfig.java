@@ -16,11 +16,12 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import com.example.BusTicketBookingApp.filters.JwtRequestFilter;
 import com.example.BusTicketBookingApp.filters.SessionRequestFilter;
+import com.example.BusTicketBookingApp.utils.PropertiesUtil;
 
 @Configuration
 @EnableWebSecurity
 public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
-
+	
 	@Autowired
 	UserDetailsService userDetailsService;
 	
@@ -29,6 +30,9 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Autowired
 	SessionRequestFilter sessionRequestFilter;
+	
+	@Autowired
+	PropertiesUtil propertiesUtil;
 	
 	// Authentication
 	@Override
@@ -45,8 +49,10 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
 			.antMatchers("/authenticate","/users/*")
 			.permitAll()
 			.anyRequest()
-			.authenticated()
-			.and()
+			.authenticated();
+		
+		if(propertiesUtil.isSessionsBasedAuth())
+			http
 			.sessionManagement()
 			.sessionCreationPolicy(SessionCreationPolicy.ALWAYS);
 		
@@ -55,8 +61,10 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
 			response.sendRedirect("/users/login?msg=Please+login&status=danger&show=show");
 		});
 		
-		http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
-		http.addFilterBefore(sessionRequestFilter, UsernamePasswordAuthenticationFilter.class);
+		if(propertiesUtil.isJWTBasedAuth())
+			http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+		if(propertiesUtil.isSessionsBasedAuth())
+			http.addFilterBefore(sessionRequestFilter, UsernamePasswordAuthenticationFilter.class);
 
 	}
 	

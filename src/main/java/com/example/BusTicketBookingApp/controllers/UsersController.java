@@ -8,13 +8,13 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,6 +28,7 @@ import com.example.BusTicketBookingApp.models.User;
 import com.example.BusTicketBookingApp.services.CookieService;
 import com.example.BusTicketBookingApp.services.UserService;
 import com.example.BusTicketBookingApp.utils.JwtUtil;
+import com.example.BusTicketBookingApp.utils.PropertiesUtil;
 
 @Controller
 @RequestMapping("/users")
@@ -51,8 +52,8 @@ public class UsersController {
 	@Autowired
 	CookieService cookieService;
 	
-	@Value("${app.authentication.type:jwt}")
-	private String authenticationType;
+	@Autowired
+	PropertiesUtil propertiesUtil;
 	
 	@GetMapping("/new")
 	public ModelAndView newUser(String msg, String show, String status, Principal principal, HttpServletResponse response) throws IOException {
@@ -103,9 +104,12 @@ public class UsersController {
 	}
 	
 	@GetMapping("/login")
-	public ModelAndView newLogin(String msg, String status, String show, HttpSession session) {
+	public ModelAndView newLogin(String msg, String status, String show, HttpServletResponse response, Principal principal) throws IOException {
 		ModelAndView newUserLoginMV = new ModelAndView("/users/login.jsp");
-		System.out.println(authenticationType);
+		
+		if(principal != null)
+			response.sendRedirect("/");
+		
 		newUserLoginMV.addObject("msg", msg);
 		newUserLoginMV.addObject("show", show);
 		newUserLoginMV.addObject("status", status);
@@ -116,7 +120,7 @@ public class UsersController {
 	@PostMapping("/login")
 	public String authenticate(@RequestParam String email,
 									@RequestParam String password,
-									HttpServletResponse resp, HttpServletRequest request) {
+									HttpServletResponse resp, HttpServletRequest request) throws UsernameNotFoundException {
 		
 		try {
 			// authenticate if credentials are matching
@@ -126,8 +130,10 @@ public class UsersController {
 			
 			// if matched gets the UserDetails object 
 			UserDetails userDetails = userDetailsService.loadUserByUsername(email);
-
-//			generateJWTAccessTokenAndStoreToCookie(userDetails, resp);
+			
+			if(propertiesUtil.isJWTBasedAuth())
+				generateJWTAccessTokenAndStoreToCookie(userDetails, resp);
+			
 
 			UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
 					userDetails,
@@ -154,7 +160,11 @@ public class UsersController {
 	
 	@PostMapping("/logout")
 	public String deleteSession(HttpSession session, HttpServletRequest request) {
-		session.invalidate();
+		
+		if(propertiesUtil.isSessionsBasedAuth())
+			session.invalidate();
+		if(propertiesUtil.isJWTBasedAuth()) {}
+		
 		SecurityContextHolder.getContext().setAuthentication(null);
 		
 		return "redirect:/users/login?msg=User+logged+out&status=success&show=show";
@@ -164,4 +174,5 @@ public class UsersController {
 		String jwt = jwtUtil.generateToken(userDetails);
 		response.addCookie(cookieService.getJwtCookie(jwt));		
 	}
+	
 }

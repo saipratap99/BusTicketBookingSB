@@ -18,6 +18,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.example.BusTicketBookingApp.utils.JwtUtil;
+import com.example.BusTicketBookingApp.utils.PropertiesUtil;
 
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter{
@@ -28,11 +29,16 @@ public class JwtRequestFilter extends OncePerRequestFilter{
 	@Autowired
 	JwtUtil jwtUtil;
 	
+	@Autowired
+	PropertiesUtil propertiesUtil;
+	
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
+
+			if(propertiesUtil.isJWTBasedAuth())
+				authorizeUsingJwtFromCookie(request, response);
 		
-//		authorizeUsingJwtFromCookie(request, response);
 		filterChain.doFilter(request, response);
 		
 	}
@@ -41,12 +47,12 @@ public class JwtRequestFilter extends OncePerRequestFilter{
 		String authorizationHeader = null; 
 		String username = null;
 		String jwt = null;
+		System.out.println(request.getRequestURI() + " " + request.getMethod());
 		
-		if(request.getCookies() != null) {
+		if(request.getCookies() != null) {	
 			for(Cookie cookie: request.getCookies()) 
 				if(cookie != null && cookie.getName().equalsIgnoreCase("jwt"))
-					authorizationHeader = "Bearer " + cookie.getValue();
-			
+					authorizationHeader = "Bearer " + cookie.getValue();	
 		}
 		
 		if(authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
