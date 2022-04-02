@@ -24,7 +24,6 @@ public class SessionRequestFilter extends OncePerRequestFilter{
 		}
 		
 		filterChain.doFilter(request, response);
-		
 	}
 
 }

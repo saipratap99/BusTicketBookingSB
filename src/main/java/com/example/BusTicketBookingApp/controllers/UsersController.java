@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -21,11 +22,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.ModelAndViewDefiningException;
-import org.springframework.web.servlet.view.RedirectView;
 
 import com.example.BusTicketBookingApp.daos.UserRepo;
-import com.example.BusTicketBookingApp.models.AuthenticationResponse;
 import com.example.BusTicketBookingApp.models.User;
 import com.example.BusTicketBookingApp.services.CookieService;
 import com.example.BusTicketBookingApp.services.UserService;
@@ -35,10 +33,8 @@ import com.example.BusTicketBookingApp.utils.JwtUtil;
 @RequestMapping("/users")
 public class UsersController {
 	
-	
 	@Autowired
 	UserRepo userRepo;
-	
 	
 	@Autowired
 	AuthenticationManager authenticationManager;
@@ -55,10 +51,14 @@ public class UsersController {
 	@Autowired
 	CookieService cookieService;
 	
+	@Value("${app.authentication.type:jwt}")
+	private String authenticationType;
+	
 	@GetMapping("/new")
 	public ModelAndView newUser(String msg, String show, String status, Principal principal, HttpServletResponse response) throws IOException {
 		if(principal != null)
 			response.sendRedirect("/");
+		
 		ModelAndView newUserMV = new ModelAndView("/users/new.jsp");
 	
 		newUserMV.addObject("msg", msg);
@@ -105,7 +105,7 @@ public class UsersController {
 	@GetMapping("/login")
 	public ModelAndView newLogin(String msg, String status, String show, HttpSession session) {
 		ModelAndView newUserLoginMV = new ModelAndView("/users/login.jsp");
-		
+		System.out.println(authenticationType);
 		newUserLoginMV.addObject("msg", msg);
 		newUserLoginMV.addObject("show", show);
 		newUserLoginMV.addObject("status", status);
@@ -118,9 +118,7 @@ public class UsersController {
 									@RequestParam String password,
 									HttpServletResponse resp, HttpServletRequest request) {
 		
-		
 		try {
-			
 			// authenticate if credentials are matching
 			authenticationManager.authenticate(
 				new UsernamePasswordAuthenticationToken(email, password)	
@@ -129,9 +127,8 @@ public class UsersController {
 			// if matched gets the UserDetails object 
 			UserDetails userDetails = userDetailsService.loadUserByUsername(email);
 
-//			String jwt = jwtUtil.generateToken(userDetails);
-//			resp.addCookie(cookieService.getJwtCookie(jwt));
-			
+//			generateJWTAccessTokenAndStoreToCookie(userDetails, resp);
+
 			UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
 					userDetails,
 					null,
@@ -157,7 +154,14 @@ public class UsersController {
 	
 	@PostMapping("/logout")
 	public String deleteSession(HttpSession session, HttpServletRequest request) {
+		session.invalidate();
 		SecurityContextHolder.getContext().setAuthentication(null);
+		
 		return "redirect:/users/login?msg=User+logged+out&status=success&show=show";
+	}
+	
+	public void generateJWTAccessTokenAndStoreToCookie(UserDetails userDetails, HttpServletResponse response) {
+		String jwt = jwtUtil.generateToken(userDetails);
+		response.addCookie(cookieService.getJwtCookie(jwt));		
 	}
 }

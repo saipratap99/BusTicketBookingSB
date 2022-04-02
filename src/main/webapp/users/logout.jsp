@@ -21,10 +21,13 @@
 </head>
 <body>
 	<div class="container-fluid">
-		Click logout button to logout!
-		<form method="post" action="logout">
-		  <button type="submit" class="btn btn-primary">Logout</button>
-		</form>
+		<div class="text-center">
+			Click logout button to logout!
+			<form method="post" action="logout">
+			  <button type="submit" class="btn btn-primary">Logout</button>
+			</form>
+		</div>
+		
 	</div>
 </body>
 </html>
