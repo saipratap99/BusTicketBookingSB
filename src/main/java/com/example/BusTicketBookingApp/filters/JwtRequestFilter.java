@@ -47,7 +47,6 @@ public class JwtRequestFilter extends OncePerRequestFilter{
 		String authorizationHeader = null; 
 		String username = null;
 		String jwt = null;
-		System.out.println(request.getRequestURI() + " " + request.getMethod());
 		
 		if(request.getCookies() != null) {	
 			for(Cookie cookie: request.getCookies()) 

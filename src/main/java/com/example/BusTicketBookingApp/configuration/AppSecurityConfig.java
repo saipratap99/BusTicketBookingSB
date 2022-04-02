@@ -56,6 +56,8 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
 			.sessionManagement()
 			.sessionCreationPolicy(SessionCreationPolicy.ALWAYS);
 		
+		if(propertiesUtil.isJWTBasedAuth())
+			http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 		
 		http.exceptionHandling().authenticationEntryPoint((request, response, authException)->{	
 			response.sendRedirect("/users/login?msg=Please+login&status=danger&show=show");
