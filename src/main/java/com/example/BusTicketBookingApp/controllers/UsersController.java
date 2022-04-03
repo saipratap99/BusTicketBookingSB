@@ -158,17 +158,17 @@ public class UsersController {
 		return logOutModelAndView;
 	}
 	
-	@PostMapping("/logout")
-	public String deleteSession(HttpSession session, HttpServletRequest request) {
-		
-		if(propertiesUtil.isSessionsBasedAuth())
-			session.invalidate();
-		if(propertiesUtil.isJWTBasedAuth()) {}
-		
-		SecurityContextHolder.getContext().setAuthentication(null);
-		
-		return "redirect:/users/login?msg=User+logged+out&status=success&show=show";
-	}
+//	@PostMapping("/logout")
+//	public String deleteSession(HttpSession session, HttpServletRequest request) {
+//		
+//		if(propertiesUtil.isSessionsBasedAuth())
+//			session.invalidate();
+//		if(propertiesUtil.isJWTBasedAuth()) {}
+//		
+//		SecurityContextHolder.getContext().setAuthentication(null);
+//		
+//		return "redirect:/users/login?msg=User+logged+out&status=success&show=show";
+//	}
 	
 	public void generateJWTAccessTokenAndStoreToCookie(UserDetails userDetails, HttpServletResponse response) {
 		String jwt = jwtUtil.generateToken(userDetails);

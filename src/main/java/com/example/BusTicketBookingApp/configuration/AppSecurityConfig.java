@@ -13,6 +13,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import com.example.BusTicketBookingApp.filters.JwtRequestFilter;
 import com.example.BusTicketBookingApp.filters.SessionRequestFilter;
@@ -63,11 +64,20 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
 			response.sendRedirect("/users/login?msg=Please+login&status=danger&show=show");
 		});
 		
-		if(propertiesUtil.isJWTBasedAuth())
+		
+		if(propertiesUtil.isJWTBasedAuth()) {	
 			http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+		}
 		if(propertiesUtil.isSessionsBasedAuth())
 			http.addFilterBefore(sessionRequestFilter, UsernamePasswordAuthenticationFilter.class);
 
+		http
+		.logout()
+			.logoutRequestMatcher(new AntPathRequestMatcher("/users/logout", "POST"))
+			.clearAuthentication(true)
+			.deleteCookies("jwt","SESSION")
+			.logoutSuccessUrl("/users/login?msg=User+logged+out&status=success&show=show");
+		
 	}
 	
 	@Bean
