@@ -82,8 +82,6 @@ public class UsersController {
 
 		String msg = "", status = "danger";
 		
-		System.out.println(user.getConfirmPassword() + "  " + user.getPassword() + " " + user.getPassword().equals(user.getConfirmPassword()));
-		
 		if(result.hasErrors()) {
 			for(FieldError error: result.getFieldErrors()) 
 				msg += error.getField() + ": " + error.getDefaultMessage() + "<br>";
@@ -112,6 +110,7 @@ public class UsersController {
 		newUserLoginMV.addObject("msg", msg);
 		newUserLoginMV.addObject("show", show);
 		newUserLoginMV.addObject("status", status);
+		newUserLoginMV.addObject("loggedIn", false);
 		
 		return newUserLoginMV;
 	}
@@ -154,6 +153,7 @@ public class UsersController {
 	@GetMapping("/logout")
 	public ModelAndView logOut() {
 		ModelAndView logOutModelAndView = new ModelAndView("/users/logout.jsp");
+		logOutModelAndView.addObject("loggedIn", true);
 		return logOutModelAndView;
 	}
 	

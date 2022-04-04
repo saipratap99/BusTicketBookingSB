@@ -38,7 +38,7 @@ public class HomeController {
 	@GetMapping("/")
 	public ModelAndView index(HttpServletRequest req, HttpSession session, Principal principal) throws IOException {
 		ModelAndView indexView = new ModelAndView("/home/index.jsp");
-
+		indexView.addObject("loggedIn", true);
 		return indexView;
 	}
 	

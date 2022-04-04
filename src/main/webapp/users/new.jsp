@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>    
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -21,41 +23,8 @@
 </head>
 <body>
 	<div class="container-fluid">
-		<c:if test="${msg != null}">
-		<div class="position-absolute bottom-0 end-0">
-			<div class="toast align-items-center text-light bg-${status}  ${show}" role="alert" aria-live="assertive" aria-atomic="true">
-			  <div class="d-flex">
-			    <div class="toast-body">
-			    	${msg}
-			   </div>
-			    <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-			  </div>
-			</div>
-		</div>
-		</c:if>
-		<div class="navBar">
-			<nav class="navbar navbar-expand-lg navbar-light bg-light">
-			  <div class="container-fluid">
-			    <a class="navbar-brand" href="#">Bus Ticket Booking</a>
-			    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-			      <span class="navbar-toggler-icon"></span>
-			    </button>	
-			    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-			      <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-			        <li class="nav-item">
-			          <a class="nav-link active" aria-current="page" href="/">Home</a>
-			        </li>
-			        <li class="nav-item">
-			          <a class="nav-link active" aria-current="page" href="/users/new">Sign Up</a>
-			        </li>
-			        <li class="nav-item">
-			          <a class="nav-link active" aria-current="page" href="/users/login">Log in</a>
-			        </li>
-			      </ul>
-			    </div>
-			  </div>
-			</nav>
-		</div>
+		<jsp:include page="/layouts/message.jsp"></jsp:include>
+		<jsp:include page="/layouts/navbar.jsp"></jsp:include>
 		<div class="content">
 			<div class="userForm w-50 mx-auto">
 				<form action="/users/create" method="post">
