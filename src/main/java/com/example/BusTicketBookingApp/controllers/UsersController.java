@@ -6,6 +6,7 @@ import java.security.Principal;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -17,6 +18,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -69,38 +72,34 @@ public class UsersController {
 		return newUserMV;
 	}
 	
+	
+	//	Binding result must come after Object to be validated
 	@PostMapping("/create")
-	public ModelAndView createUser(@RequestParam String firstName, 
-							   @RequestParam String lastName,
-							   @RequestParam String email,
-							   @RequestParam String password,
-							   @RequestParam String confirmPassword, 
+	public ModelAndView createUser(@Valid User user,
+							   BindingResult result,
 							   HttpServletResponse response,
 							   Principal principal) throws IOException {
-		
-		User user = new User(firstName, lastName, email, password);
-		
+
 		String msg = "", status = "danger";
 		
-		if(!firstName.matches("[a-zA-Z]{2,}"))
-			msg += "First name must be length of 2 and it should contains only Alpabets.</br>";
+		System.out.println(user.getConfirmPassword() + "  " + user.getPassword() + " " + user.getPassword().equals(user.getConfirmPassword()));
 		
-		else if(!email.matches("[a-zA-Z0-9]+[@]{1}[a-zA-Z]+[.][a-zA-Z]{2,3}"))
-			msg += "Email must be valid.</br>";
-		
-		else if(userRepo.existsByEmail(email))
-			msg += "Email already exsits.</br>";
-		
-		else if(!password.equals(confirmPassword))
-			msg += "Passwords should match.</br>";
-		
-		else {
-			userService.save(user);
-			msg += "User " + firstName + " has been added!";
-			status = "success";
+		if(result.hasErrors()) {
+			for(FieldError error: result.getFieldErrors()) 
+				msg += error.getField() + ": " + error.getDefaultMessage() + "<br>";
+		}else {
+			if(userRepo.findByEmail(user.getEmail()) != null)
+				msg += "Email already exsits";
+			else if(!user.getPassword().equals(user.getConfirmPassword()))
+				msg += "Password must be same";
+			else {
+				userService.save(user);
+				msg += "User " + user.getFirstName() + " has been added!";
+				status = "success";
+			}
 		}
 		
-		return newUser(msg, "show", status,principal, response);
+		return newUser(msg, "show", status, principal, response);
 	}
 	
 	@GetMapping("/login")
@@ -158,17 +157,21 @@ public class UsersController {
 		return logOutModelAndView;
 	}
 	
-//	@PostMapping("/logout")
-//	public String deleteSession(HttpSession session, HttpServletRequest request) {
-//		
-//		if(propertiesUtil.isSessionsBasedAuth())
-//			session.invalidate();
-//		if(propertiesUtil.isJWTBasedAuth()) {}
-//		
-//		SecurityContextHolder.getContext().setAuthentication(null);
-//		
-//		return "redirect:/users/login?msg=User+logged+out&status=success&show=show";
-//	}
+	/*
+	 
+	@PostMapping("/logout")
+	public String deleteSession(HttpSession session, HttpServletRequest request) {
+		
+		if(propertiesUtil.isSessionsBasedAuth())
+			session.invalidate();
+		if(propertiesUtil.isJWTBasedAuth()) {}
+		
+		SecurityContextHolder.getContext().setAuthentication(null);
+		
+		return "redirect:/users/login?msg=User+logged+out&status=success&show=show";
+	}
+	
+	*/
 	
 	public void generateJWTAccessTokenAndStoreToCookie(UserDetails userDetails, HttpServletResponse response) {
 		String jwt = jwtUtil.generateToken(userDetails);

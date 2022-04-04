@@ -6,6 +6,10 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "users")
@@ -14,19 +18,37 @@ public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
+	
 	@Column(name = "first_name", length = 30, nullable = false)
+	@NotBlank
+	@Size(min = 2, message = "must be atleast 2 characters")
 	private String firstName;
+	
 	@Column(name = "last_name", length = 30)
+	@NotBlank
+	@Size(min = 2, message = "must be atleast 2 characters")
 	private String lastName;
+	
 	@Column(nullable = false, unique = true)
+	@Email
 	private String email;
+	
+	@NotBlank
+	@Size(min = 3, message = "must be atleast 2 characters")
 	private String password;
+	
+	@Transient
+	private String confirmPassword;
+	
 	@Column(name="mobile_numer", unique = true)
 	private String mobileNumber;
+	
 	@Column(columnDefinition = "varchar(50) default 'ROLE_USER'")
 	private String role;
+	
 	@Column(name = "is_activated", columnDefinition = "boolean default false")
 	private boolean isActivated;
+	
 	@Column(nullable = true)
 	private int OTP;
 	
@@ -115,6 +137,11 @@ public class User {
 		OTP = oTP;
 	}
 	
-	
-	
+	public String getConfirmPassword() {
+		return confirmPassword;
+	}
+
+	public void setConfirmPassword(String confirmPassword) {
+		this.confirmPassword = confirmPassword;
+	}
 }
