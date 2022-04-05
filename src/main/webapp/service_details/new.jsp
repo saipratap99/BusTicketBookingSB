@@ -1,12 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>New Bus Details</title>
+<title>New Service Details</title>
 	<!-- Google fonts -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Karla|Archivo|Roboto" />
     <!--jQuery-->
@@ -27,56 +26,57 @@
 		<jsp:include page="/layouts/navbar.jsp"></jsp:include>
 		<div class="content">
 			<div class="userForm w-50 mx-auto">
-				<form action="/bus_details/create" method="post">
+				<form action="/service_details/create" method="post">
 				<fieldset>
 					<div>
-						<legend class="text-center text-primary">Bus Details</legend>
+						<legend class="text-center text-primary">Service Details</legend>
 					</div>
 					  <div class="mb-3">
-					    <label for="busName" class="form-label">Bus Name</label>
-					    <input type="text" class="form-control" id="busName" name="busName">
+					    <label for="serviceName" class="form-label">Service Name</label>
+					    <input type="text" class="form-control" id="serviceName" name="serviceName">
 					  </div>
 					  <div class="mb-3">
-					    <label for="busRegNumber" class="form-label">Bus Registration Number</label>
-					    <input type="text" class="form-control" id="busRegNumber" name="busRegNumber">
+					    <label for="serviceNumber" class="form-label">Service Number</label>
+					    <input type="text" class="form-control" id="serviceNumber" name="serviceNumber">
 					  </div>
 					  <div class="mb-3">
-					    <label for="busType" class="form-label">Bus Type</label>
-					    <input type="text" class="form-control" id="busType" name="busType">
+					    <label for="serviceType" class="form-label">Service Type</label>
+					    <input type="text" class="form-control" id="serviceType" name="serviceType">
 					  </div>
 					  <div class="mb-3">
-					    <label for="seatingType" class="form-label">Seating Type</label>
-					    <input type="text" class="form-control" id="seatingType" name="seatingType">
+					    <label for="departureDate" class="form-label">Departure Date</label>
+					    <input type="date" class="form-control" id="departureDate" name="departureDate">
 					  </div>
 					  <div class="mb-3">
-					    <label for="seatCount" class="form-label">Seating Count</label>
-					    <input type="number" class="form-control" id="seatCount" name="seatCount">
+					    <label for="departureTime" class="form-label">Departure Time</label>
+					    <input type="time" class="form-control" id="departureTime" name="departureTime">
 					  </div>
 					  <div class="mb-3">
-					    <label for="lastMaintenance" class="form-label">Last Maintenance</label>
-					    <input type="date" class="form-control" id="lastMaintenance" name="lastMaintenance">
-					  </div>
-					  <div class="mb-3">
-					    <label for="onService" class="form-label">On Service</label>
-					    <input type="date" class="form-control" id="onService" name="onService">
-					  </div>
-					  <div class="mb-3">
-					  	<label for="currLocation" class="form-label">Current Location</label>
-					  	<input list="locations" value="" class="col-sm-6 custom-select custom-select-sm form-control" name="currLocation" placeholder="Select location">
+					  	<label for="departureLocation" class="form-label">Departure Location</label>
+					  	<input list="locations" value="" class="col-sm-6 custom-select custom-select-sm form-control" name="departureLocation" placeholder="Select location">
 						<jsp:include page="/locations/list.jsp">
 					        <jsp:param name="locations" value="${locations}"/>
 					    </jsp:include>
 					  </div>
 					  <div class="mb-3">
-					  	<label for="serviceDetails" class="form-label">Service Details</label>
-					  	<input list="serviceDetails" value="" class="col-sm-6 custom-select custom-select-sm form-control" name="serviceDetails" placeholder="Select service details">
-						<datalist id="serviceDetails">
-						    <option value="Hyderabad - Vijayawada">Hyderabad - Vijayawada</option>
-						    <option value="Vijayawada - Hyderabad">Vijayawada - Hyderabad</option>
-						    <option value="Vishakapatnam - Hyderabad">Vishakapatnam - Hyderabad</option>
-						</datalist>
+					    <label for="arrivalDate" class="form-label">Arrival Date</label>
+					    <input type="date" class="form-control" id="arrivalDate" name="arrivalDate">
 					  </div>
-					  
+					  <div class="mb-3">
+					    <label for="arrivalTime" class="form-label">Arrival Time</label>
+					    <input type="time" class="form-control" id="arrivalTime" name="arrivalTime">
+					  </div>
+					  <div class="mb-3">
+					  	<label for="arrivalLocation" class="form-label">Arrival Location</label>
+					  	<input list="locations" value="" class="col-sm-6 custom-select custom-select-sm form-control" name="arrivalLocation" placeholder="Select location">
+						<jsp:include page="/locations/list.jsp">
+					        <jsp:param name="locations" value="${locations}"/>
+					    </jsp:include>
+					  </div>
+					  <div class="mb-3">
+					    <label for="distance" class="form-label">Distance</label>
+					    <input type="number" class="form-control" id="distance" name="distance">
+					  </div>			  
 					  <button type="submit" class="btn btn-primary">Submit</button>
 					</form>
 				</fieldset>
