@@ -32,6 +32,8 @@ public class BusDetails {
 	@Column(name = "seating_type", nullable = false)
 	private String seatingType;
 	
+	@Column(nullable = false)
+	private double distance;
 	
 	@ManyToOne
 	private Location currLocation;
@@ -127,8 +129,23 @@ public class BusDetails {
 	public void setServiceDetailsId(ServiceDetails serviceDetails) {
 		this.serviceDetails = serviceDetails;
 	}
+
+	public double getDistance() {
+		return distance;
+	}
+
+	public void setDistance(double distance) {
+		this.distance = distance;
+	}
+
+	public ServiceDetails getServiceDetails() {
+		return serviceDetails;
+	}
+
+	public void setServiceDetails(ServiceDetails serviceDetails) {
+		this.serviceDetails = serviceDetails;
+	}
 	
-		
 }
 
 
