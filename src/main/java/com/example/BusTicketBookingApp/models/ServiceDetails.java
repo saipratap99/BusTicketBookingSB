@@ -33,12 +33,6 @@ public class ServiceDetails {
 	@Column(name = "service_type", nullable = false)
 	private String serviceType;
 	
-	@Column(name = "available_seats", nullable = false)
-	private int availableSeats;
-	
-	@Column(name = "base_price", nullable = false, columnDefinition = "Decimal(10,2) default '0.0'")
-	private double basePrice;
-	
 	@Column(name = "departure_date", nullable = false)
 	private Date departureDate;
 	
@@ -51,6 +45,9 @@ public class ServiceDetails {
 	@Column(name = "arrival_time", nullable = false)
 	private Time arrivalTime;
 	
+	@Column(nullable = false)
+	private double distance;
+
 	@OneToMany(mappedBy = "serviceDetails") // One service may have many buses
 	@LazyCollection(LazyCollectionOption.FALSE)
 	List<BusDetails> busDetails;
@@ -97,22 +94,6 @@ public class ServiceDetails {
 
 	public void setServiceType(String serviceType) {
 		this.serviceType = serviceType;
-	}
-
-	public int getAvailableSeats() {
-		return availableSeats;
-	}
-
-	public void setAvailableSeats(int availableSeats) {
-		this.availableSeats = availableSeats;
-	}
-
-	public double getBasePrice() {
-		return basePrice;
-	}
-
-	public void setBasePrice(double basePrice) {
-		this.basePrice = basePrice;
 	}
 
 	public Date getDepartureDate() {
@@ -179,6 +160,13 @@ public class ServiceDetails {
 		this.bookingDetails = bookingDetails;
 	}
 	
+	public double getDistance() {
+		return distance;
+	}
+
+	public void setDistance(double distance) {
+		this.distance = distance;
+	}
 
 	
 }

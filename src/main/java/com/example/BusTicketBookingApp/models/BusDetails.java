@@ -32,12 +32,15 @@ public class BusDetails {
 	@Column(name = "seating_type", nullable = false)
 	private String seatingType;
 	
-	@Column(nullable = false)
-	private double distance;
+	@Column(name = "base_price", nullable = false, columnDefinition = "Decimal(10,2) default '0.0'")
+	private double basePrice;
+	
 	
 	@ManyToOne
 	private Location currLocation;
 	
+	@Column(name = "available_seats", nullable = false)
+	private int availableSeats;
 	
 	@Column(name = "last_maintance", nullable = false)
 	private Date lastMaintance;
@@ -129,13 +132,13 @@ public class BusDetails {
 	public void setServiceDetailsId(ServiceDetails serviceDetails) {
 		this.serviceDetails = serviceDetails;
 	}
-
-	public double getDistance() {
-		return distance;
+	
+	public int getAvailableSeats() {
+		return availableSeats;
 	}
 
-	public void setDistance(double distance) {
-		this.distance = distance;
+	public void setAvailableSeats(int availableSeats) {
+		this.availableSeats = availableSeats;
 	}
 
 	public ServiceDetails getServiceDetails() {
@@ -145,6 +148,15 @@ public class BusDetails {
 	public void setServiceDetails(ServiceDetails serviceDetails) {
 		this.serviceDetails = serviceDetails;
 	}
+	
+	public double getBasePrice() {
+		return basePrice;
+	}
+
+	public void setBasePrice(double basePrice) {
+		this.basePrice = basePrice;
+	}
+
 	
 }
 
