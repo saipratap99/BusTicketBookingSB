@@ -4,6 +4,6 @@
 
 <datalist id="locations">
 	<c:forEach items="${locations}" var="location">
-	    <option value="${location.getLocationName()}">${location.getLocationName()}</option>
+	    <option value="${location}">
     </c:forEach>
 </datalist>

@@ -3,6 +3,7 @@ package com.example.BusTicketBookingApp.controllers;
 import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -18,6 +19,7 @@ import com.example.BusTicketBookingApp.daos.LocationRepo;
 import com.example.BusTicketBookingApp.daos.ServiceDetailsRepo;
 import com.example.BusTicketBookingApp.models.Location;
 import com.example.BusTicketBookingApp.models.ServiceDetails;
+import com.example.BusTicketBookingApp.projections.IdAndLocation;
 import com.example.BusTicketBookingApp.utils.BasicUtil;
 
 @Controller
@@ -35,7 +37,7 @@ public class ServiceDetaillsController {
 	
 	@GetMapping("/new")
 	public String newBusDetails(Model model) {
-		List<Location> locations = locationRepo.findAll();
+		List<String> locations = locationRepo.findAllProjectedByLocationName(); 
 		
 		model.addAttribute("locations", locations);
 		
