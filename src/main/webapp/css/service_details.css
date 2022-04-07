@@ -4,7 +4,6 @@
     gap: 0px 15px;
 }
 
-
 .grid-row.arrival, .grid-row.departure{
     grid-template-areas: 
     'date time'
@@ -22,3 +21,4 @@
 .location{
     grid-area: location;
 }
+

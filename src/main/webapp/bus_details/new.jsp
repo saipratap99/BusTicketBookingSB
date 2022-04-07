@@ -20,6 +20,7 @@
     <script src="https://use.fontawesome.com/bae75bb48f.js"></script>
     <!-- Google fonts -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Sofia">
+    <link rel="stylesheet" href="/css/service_details.css">
 </head>
 <body>
 	<div class="container-fluid">
@@ -29,52 +30,64 @@
 			<div class="userForm w-50 mx-auto">
 				<form action="/bus_details/create" method="post">
 				<fieldset>
-					<div>
-						<legend class="text-center text-primary">Bus Details</legend>
-					</div>
+					  <legend class="text-center text-primary">Bus Details</legend>
 					  <div class="mb-3">
 					    <label for="busName" class="form-label">Bus Name</label>
 					    <input type="text" class="form-control" id="busName" name="busName">
 					  </div>
-					  <div class="mb-3">
-					    <label for="busRegNumber" class="form-label">Bus Registration Number</label>
-					    <input type="text" class="form-control" id="busRegNumber" name="busRegNumber">
+					  <div class="grid-row">
+						  <div class="mb-3">
+						    <label for="busRegNumber" class="form-label">Bus Registration Number</label>
+						    <input type="text" class="form-control" id="busRegNumber" name="busRegNumber">
+						  </div>
+						  <div class="mb-3">
+						    <label for="busType" class="form-label">Bus Type</label>
+						    <input list="busTypes" value="" class="col-sm-6 custom-select custom-select-sm form-control" name="busType" placeholder="Select Bus Type">
+							<datalist id="busTypes">
+							    <option value="Non - AC">
+							    <option value="AC">
+							</datalist>
+						  </div>
 					  </div>
-					  <div class="mb-3">
-					    <label for="busType" class="form-label">Bus Type</label>
-					    <input type="text" class="form-control" id="busType" name="busType">
+					  <div class="grid-row">
+						  <div class="mb-3">
+						    <label for="seatingType" class="form-label">Seating Type</label>
+						    <input list="seatingTypes" value="" class="col-sm-6 custom-select custom-select-sm form-control" name="seatingType" placeholder="Select Seating Type">
+							<datalist id="seatingTypes">
+							    <option value="Seater">
+							    <option value="Pushback">
+							    <option value="Sleeper">
+							    <option value="Semi - Sleeper">
+							</datalist>
+						  </div>
+						  <div class="mb-3">
+						    <label for="seatCount" class="form-label">Seating Count</label>
+						    <input type="number" class="form-control" id="seatCount" name="seatCount">
+						  </div>
 					  </div>
-					  <div class="mb-3">
-					    <label for="seatingType" class="form-label">Seating Type</label>
-					    <input type="text" class="form-control" id="seatingType" name="seatingType">
-					  </div>
-					  <div class="mb-3">
-					    <label for="seatCount" class="form-label">Seating Count</label>
-					    <input type="number" class="form-control" id="seatCount" name="seatCount">
-					  </div>
-					  <div class="mb-3">
-					    <label for="lastMaintenance" class="form-label">Last Maintenance</label>
-					    <input type="date" class="form-control" id="lastMaintenance" name="lastMaintenance">
-					  </div>
-					  <div class="mb-3">
-					    <label for="onService" class="form-label">On Service</label>
-					    <input type="date" class="form-control" id="onService" name="onService">
+					  <div class="grid-row">
+						  <div class="mb-3">
+						    <label for="lastMaintance" class="form-label">Last Maintenance</label>
+						    <input type="date" class="form-control" id="lastMaintenance" name="lastMaintance">
+						  </div>
+						  <div class="mb-3">
+						    <label for="onService" class="form-label">On Service</label>
+						    <input type="date" class="form-control" id="onService" name="onService">
+						  </div>	
 					  </div>
 					  <div class="mb-3">
 					  	<label for="currLocation" class="form-label">Current Location</label>
-					  	<input list="locations" value="" class="col-sm-6 custom-select custom-select-sm form-control" name="currLocation" placeholder="Select location">
+					  	<input list="locations" value="" class="col-sm-6 custom-select custom-select-sm form-control" name="location" placeholder="Select location">
 						<jsp:include page="/locations/list.jsp">
 					        <jsp:param name="locations" value="${locations}"/>
 					    </jsp:include>
 					  </div>
 					  <div class="mb-3">
 					  	<label for="serviceDetails" class="form-label">Service Details</label>
-					  	<input list="serviceDetails" value="" class="col-sm-6 custom-select custom-select-sm form-control" name="serviceDetails" placeholder="Select service details">
-						<datalist id="serviceDetails">
-						    <option value="Hyderabad - Vijayawada">Hyderabad - Vijayawada</option>
-						    <option value="Vijayawada - Hyderabad">Vijayawada - Hyderabad</option>
-						    <option value="Vishakapatnam - Hyderabad">Vishakapatnam - Hyderabad</option>
-						</datalist>
+					  	<input list="serviceDetails" value="" class="col-sm-6 custom-select custom-select-sm form-control" name="service" placeholder="Select service details">
+						<jsp:include page="/service_details/list.jsp">
+					        <jsp:param name="services" value="${services}"/>
+					    </jsp:include>
 					  </div>
 					  
 					  <button type="submit" class="btn btn-primary">Submit</button>

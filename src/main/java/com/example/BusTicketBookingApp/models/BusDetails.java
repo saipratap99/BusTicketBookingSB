@@ -157,6 +157,11 @@ public class BusDetails {
 		this.basePrice = basePrice;
 	}
 
+	public void generateBusName() {
+		this.setBusName(this.busName + " " + this.busType + " - " + this.seatingType);
+		this.setAvailableSeats(seatCount);
+	}
+
 	
 }
 

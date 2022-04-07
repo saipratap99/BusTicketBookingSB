@@ -38,7 +38,7 @@ public class ServiceDetaillsController {
 	@GetMapping("/new")
 	public String newBusDetails(Model model) {
 		List<String> locations = locationRepo.findAllProjectedByLocationName(); 
-		
+
 		model.addAttribute("locations", locations);
 		
 		return "/service_details/new.jsp";
