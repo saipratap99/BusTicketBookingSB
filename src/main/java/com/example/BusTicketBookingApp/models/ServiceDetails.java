@@ -168,5 +168,18 @@ public class ServiceDetails {
 		this.distance = distance;
 	}
 
+	public void genrateServiceName() {
+		this.setServiceName(this.getServiceNumber() + " " + this.getDepartureLocation().getLocationName() + " - " + this.getArrivalLocation().getLocationName() + " " + this.getServiceType());
+	}
+
+	@Override
+	public String toString() {
+		return "ServiceDetails [id=" + id + ", serviceName=" + serviceName + ", serviceNumber=" + serviceNumber
+				+ ", serviceType=" + serviceType + ", departureDate=" + departureDate + ", arrivalDate=" + arrivalDate
+				+ ", departureTime=" + departureTime + ", arrivalTime=" + arrivalTime + ", distance=" + distance
+				+ ", busDetails=" + busDetails + ", departureLocation=" + departureLocation + ", arrivalLocation="
+				+ arrivalLocation + "]";
+	}
+	
 	
 }

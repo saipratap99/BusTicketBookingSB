@@ -1,0 +1,24 @@
+.grid-row{
+    display: grid;
+    grid-template-columns: 50% 50%;
+    gap: 0px 15px;
+}
+
+
+.grid-row.arrival, .grid-row.departure{
+    grid-template-areas: 
+    'date time'
+    'location location';
+}
+
+.date{
+    grid-area: date;
+}
+
+.time{
+    grid-area: time;
+}
+
+.location{
+    grid-area: location;
+}

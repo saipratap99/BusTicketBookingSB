@@ -30,15 +30,15 @@ public class Location {
 	private State state;
 
 	@OneToMany(mappedBy = "currLocation")
-	@LazyCollection(LazyCollectionOption.FALSE)
+//	@LazyCollection(LazyCollectionOption.FALSE)
 	private List<BusDetails> busDetails;
 	
 	@OneToMany(mappedBy = "departureLocation")
-	@LazyCollection(LazyCollectionOption.FALSE)
+//	@LazyCollection(LazyCollectionOption.FALSE)
 	private List<ServiceDetails> departureServiceDetails;
 	
 	@OneToMany(mappedBy = "arrivalLocation")
-	@LazyCollection(LazyCollectionOption.FALSE)
+//	@LazyCollection(LazyCollectionOption.FALSE)
 	private List<ServiceDetails> arrivalServiceDetails;
 	
 
