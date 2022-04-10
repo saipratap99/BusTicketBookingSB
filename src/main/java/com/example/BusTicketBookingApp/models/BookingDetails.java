@@ -35,10 +35,10 @@ public class BookingDetails {
 	@Column(columnDefinition = "Decimal(10,2) default '0.0'")
 	private double ratings;
 		
-	@ManyToOne // many bookings belongs to one user
+	@ManyToOne(optional = false) // many bookings belongs to one user
 	private User user; 
 	
-	@ManyToOne
+	@ManyToOne(optional = false)
 	private Schedule schedule;
 
 	// created_at, updated_at

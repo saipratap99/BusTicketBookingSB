@@ -43,7 +43,7 @@ public class BusDetails {
 	@Column(name = "on_service", nullable = false)
 	private Date onService;
 	
-	@ManyToOne
+	@ManyToOne(optional = false)
 	private User operator;
 	
 	@OneToMany(mappedBy = "busDetails")

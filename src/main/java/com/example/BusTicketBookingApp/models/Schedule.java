@@ -23,23 +23,26 @@ public class Schedule {
 	
 	@Column(name = "base_price", nullable = false, columnDefinition = "Decimal(10,2) default '0.0'")
 	private double basePrice;
-
-	@Column(name = "departure_date", nullable = false)
+ 
+	@Column(name = "week_day")
+	private int weekDay;
+	
+	@Column(name = "departure_date")
 	private Date departureDate;
 	
-	@Column(name = "arrival_date", nullable = false)
+	@Column(name = "arrival_date")
 	private Date arrivalDate;
-
+    
 	@Column(name = "departure_time", nullable = false)
 	private Time departureTime;
 	
 	@Column(name = "arrival_time", nullable = false)
 	private Time arrivalTime;
 	
-	@ManyToOne
+	@ManyToOne(optional = false)
 	BusDetails busDetails;
 	
-	@ManyToOne
+	@ManyToOne(optional = false)
 	ServiceDetails serviceDetails;
 	
 	@OneToMany(mappedBy = "schedule")
@@ -116,7 +119,13 @@ public class Schedule {
 	public void setBookingDetails(List<BookingDetails> bookingDetails) {
 		this.bookingDetails = bookingDetails;
 	}
+
+	public int getWeekDay() {
+		return weekDay;
+	}
+
+	public void setWeekDay(int weekDay) {
+		this.weekDay = weekDay;
+	}
 	
-
-
 }

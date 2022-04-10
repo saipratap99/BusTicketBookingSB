@@ -36,10 +36,10 @@ public class ServiceDetails {
 	@Column(nullable = false)
 	private double distance;
 
-	@ManyToOne // many services may have same departure location.
+	@ManyToOne(optional = false) // many services may have same departure location.
 	private Location departureLocation;
 	
-	@ManyToOne // many services may have same arrival location. 
+	@ManyToOne(optional = false) // many services may have same arrival location. 
 	private Location arrivalLocation;
 
 	@OneToMany(mappedBy = "serviceDetails")
