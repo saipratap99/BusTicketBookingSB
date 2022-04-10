@@ -32,26 +32,10 @@ public class ServiceDetails {
 	
 	@Column(name = "service_type", nullable = false)
 	private String serviceType;
-	
-	@Column(name = "departure_date", nullable = false)
-	private Date departureDate;
-	
-	@Column(name = "arrival_date", nullable = false)
-	private Date arrivalDate;
-
-	@Column(name = "departure_time", nullable = false)
-	private Time departureTime;
-	
-	@Column(name = "arrival_time", nullable = false)
-	private Time arrivalTime;
-	
+		
 	@Column(nullable = false)
 	private double distance;
 
-	@OneToMany(mappedBy = "serviceDetails") // One service may have many buses
-	@LazyCollection(LazyCollectionOption.FALSE)
-	List<BusDetails> busDetails;
-	
 	@ManyToOne // many services may have same departure location.
 	private Location departureLocation;
 	
@@ -59,9 +43,7 @@ public class ServiceDetails {
 	private Location arrivalLocation;
 
 	@OneToMany(mappedBy = "serviceDetails")
-	@LazyCollection(LazyCollectionOption.FALSE)
-	private List<BookingDetails> bookingDetails;
-	
+	private List<Schedule> schedule;
 	// driver, conductor, created_at, updated_at
 
 	public int getId() {
@@ -96,44 +78,12 @@ public class ServiceDetails {
 		this.serviceType = serviceType;
 	}
 
-	public Date getDepartureDate() {
-		return departureDate;
+	public double getDistance() {
+		return distance;
 	}
 
-	public void setDepartureDate(Date departureDate) {
-		this.departureDate = departureDate;
-	}
-
-	public Date getArrivalDate() {
-		return arrivalDate;
-	}
-
-	public void setArrivalDate(Date arrivalDate) {
-		this.arrivalDate = arrivalDate;
-	}
-
-	public Time getDepartureTime() {
-		return departureTime;
-	}
-
-	public void setDepartureTime(Time departureTime) {
-		this.departureTime = departureTime;
-	}
-
-	public Time getArrivalTime() {
-		return arrivalTime;
-	}
-
-	public void setArrivalTime(Time arrivalTime) {
-		this.arrivalTime = arrivalTime;
-	}
-
-	public List<BusDetails> getBusDetails() {
-		return busDetails;
-	}
-
-	public void setBusDetails(List<BusDetails> busDetails) {
-		this.busDetails = busDetails;
+	public void setDistance(double distance) {
+		this.distance = distance;
 	}
 
 	public Location getDepartureLocation() {
@@ -152,22 +102,17 @@ public class ServiceDetails {
 		this.arrivalLocation = arrivalLocation;
 	}
 
-	public List<BookingDetails> getBookingDetails() {
-		return bookingDetails;
+	public List<Schedule> getSchedule() {
+		return schedule;
 	}
 
-	public void setBookingDetails(List<BookingDetails> bookingDetails) {
-		this.bookingDetails = bookingDetails;
+	public void setSchedule(List<Schedule> schedule) {
+		this.schedule = schedule;
 	}
+
 	
-	public double getDistance() {
-		return distance;
-	}
 
-	public void setDistance(double distance) {
-		this.distance = distance;
-	}
-
+	
 	public void genrateServiceName() {
 		this.setServiceName(this.getServiceNumber() + " " + this.getDepartureLocation().getLocationName() + " - " + this.getArrivalLocation().getLocationName() + " " + this.getServiceType());
 	}
@@ -175,11 +120,9 @@ public class ServiceDetails {
 	@Override
 	public String toString() {
 		return "ServiceDetails [id=" + id + ", serviceName=" + serviceName + ", serviceNumber=" + serviceNumber
-				+ ", serviceType=" + serviceType + ", departureDate=" + departureDate + ", arrivalDate=" + arrivalDate
-				+ ", departureTime=" + departureTime + ", arrivalTime=" + arrivalTime + ", distance=" + distance
-				+ ", busDetails=" + busDetails + ", departureLocation=" + departureLocation + ", arrivalLocation="
-				+ arrivalLocation + "]";
+				+ ", serviceType=" + serviceType + ", distance=" + distance + ", departureLocation=" + departureLocation
+				+ ", arrivalLocation=" + arrivalLocation + ", schedule=" + schedule + "]";
 	}
-	
+
 	
 }

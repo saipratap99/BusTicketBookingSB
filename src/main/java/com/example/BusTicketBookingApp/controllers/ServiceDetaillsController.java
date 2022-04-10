@@ -47,19 +47,19 @@ public class ServiceDetaillsController {
 	@PostMapping("/create")
 	public String create(ServiceDetails serviceDetail, String depLocation, String arrLocation, String depTime, String arrTime, Model model) throws ParseException {
 		
-		serviceDetail.setDepartureTime(basicUtil.parseStringToSqlTime(depTime));
-		serviceDetail.setArrivalTime(basicUtil.parseStringToSqlTime(arrTime));
-		
-		Optional<Location> departureLocation = locationRepo.findByLocationName(depLocation);
-		Optional<Location> arrivalLocation = locationRepo.findByLocationName(arrLocation);
-		
-		if(departureLocation.isPresent() && arrivalLocation.isPresent()) {
-			serviceDetail.setDepartureLocation(departureLocation.get());
-			serviceDetail.setArrivalLocation(arrivalLocation.get());
-			serviceDetail.genrateServiceName();
-			serviceDetailsRepo.save(serviceDetail);
-		}
-		
+//		serviceDetail.setDepartureTime(basicUtil.parseStringToSqlTime(depTime));
+//		serviceDetail.setArrivalTime(basicUtil.parseStringToSqlTime(arrTime));
+//		
+//		Optional<Location> departureLocation = locationRepo.findByLocationName(depLocation);
+//		Optional<Location> arrivalLocation = locationRepo.findByLocationName(arrLocation);
+//		
+//		if(departureLocation.isPresent() && arrivalLocation.isPresent()) {
+//			serviceDetail.setDepartureLocation(departureLocation.get());
+//			serviceDetail.setArrivalLocation(arrivalLocation.get());
+//			serviceDetail.genrateServiceName();
+//			serviceDetailsRepo.save(serviceDetail);
+//		}
+//		
 		return "redirect:/service_details/new";
 	}
 }

@@ -48,15 +48,15 @@ public class BusDetailsController {
 	@PostMapping("/create")
 	public String create(BusDetails busDetails,String location, String service, Model model) {
 		
-		Optional<Location> currLocation = locationRepo.findByLocationName(location);
-		Optional<ServiceDetails> serviceDetails = serviceDetailsRepo.findByServiceName(service); 
-		
-		if(currLocation.isPresent() && serviceDetails.isPresent()) {
-			busDetails.setCurrLocation(currLocation.get());
-			busDetails.setServiceDetails(serviceDetails.get());
-			busDetails.generateBusName();
-			busDetailsRepo.save(busDetails);
-		}
+//		Optional<Location> currLocation = locationRepo.findByLocationName(location);
+//		Optional<ServiceDetails> serviceDetails = serviceDetailsRepo.findByServiceName(service); 
+//		
+//		if(currLocation.isPresent() && serviceDetails.isPresent()) {
+//			busDetails.setCurrLocation(currLocation.get());
+//			busDetails.setServiceDetails(serviceDetails.get());
+//			busDetails.generateBusName();
+//			busDetailsRepo.save(busDetails);
+//		}
 		
 		
 		return "/bus_details/new.jsp";

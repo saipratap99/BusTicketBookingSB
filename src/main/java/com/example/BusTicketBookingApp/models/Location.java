@@ -28,10 +28,6 @@ public class Location {
 
 	@ManyToOne
 	private State state;
-
-	@OneToMany(mappedBy = "currLocation")
-//	@LazyCollection(LazyCollectionOption.FALSE)
-	private List<BusDetails> busDetails;
 	
 	@OneToMany(mappedBy = "departureLocation")
 //	@LazyCollection(LazyCollectionOption.FALSE)
@@ -66,14 +62,6 @@ public class Location {
 
 	public void setState(State state) {
 		this.state = state;
-	}
-
-	public List<BusDetails> getBusDetails() {
-		return busDetails;
-	}
-
-	public void setBusDetails(List<BusDetails> busDetails) {
-		this.busDetails = busDetails;
 	}
 
 	public List<ServiceDetails> getDepartureServiceDetails() {

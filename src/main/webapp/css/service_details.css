@@ -22,3 +22,19 @@
     grid-area: location;
 }
 
+@media only screen and (max-width: 600px){
+	.grid-row{
+		grid-template-columns: 100%;
+	}
+	
+	.grid-row.arrival, .grid-row.departure{
+		grid-template-areas: 'date'
+							 'time'
+							'location';
+	}
+	
+	.serviceDetailsForm{
+		width: 95%;
+	}
+}
+

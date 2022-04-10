@@ -53,6 +53,9 @@ public class User {
 	@Column(columnDefinition = "varchar(50) default 'ROLE_USER'")
 	private String role;
 	
+	@Column
+	private String operator;
+	
 	@Column(name = "is_activated", columnDefinition = "boolean default false")
 	private boolean isActivated;
 	
@@ -63,8 +66,10 @@ public class User {
 	@LazyCollection(LazyCollectionOption.FALSE)
 	List<BookingDetails> bookingDetails;
 	
-//	created_at, updated_at
+	@OneToMany(mappedBy = "operator")
+	List<BusDetails> busDetails;
 	
+//	created_at, updated_at
 	
 	public User() {}
 	
@@ -76,6 +81,14 @@ public class User {
 		this.role = "ROLE_USER";
 	}
 	
+	public List<BusDetails> getBusDetails() {
+		return busDetails;
+	}
+
+	public void setBusDetails(List<BusDetails> busDetails) {
+		this.busDetails = busDetails;
+	}
+
 	public int getId() {
 		return id;	
 	}
@@ -164,5 +177,11 @@ public class User {
 		this.bookingDetails = bookingDetails;
 	}
 	
+	public String getOperator() {
+		return operator;
+	}
 
+	public void setOperator(String operator) {
+		this.operator = operator;
+	}
 }

@@ -1,6 +1,7 @@
 package com.example.BusTicketBookingApp.models;
 
 import java.sql.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -31,14 +33,7 @@ public class BusDetails {
 	
 	@Column(name = "seating_type", nullable = false)
 	private String seatingType;
-	
-	@Column(name = "base_price", nullable = false, columnDefinition = "Decimal(10,2) default '0.0'")
-	private double basePrice;
-	
-	
-	@ManyToOne
-	private Location currLocation;
-	
+		
 	@Column(name = "available_seats", nullable = false)
 	private int availableSeats;
 	
@@ -48,8 +43,11 @@ public class BusDetails {
 	@Column(name = "on_service", nullable = false)
 	private Date onService;
 	
-	@ManyToOne // many bus details belongs to one service
-	private ServiceDetails serviceDetails;
+	@ManyToOne
+	private User operator;
+	
+	@OneToMany(mappedBy = "busDetails")
+	List<Schedule> schedule;
 	
 	// created_at, updated_at
 
@@ -101,12 +99,12 @@ public class BusDetails {
 		this.seatingType = seatingType;
 	}
 
-	public Location getCurrLocation() {
-		return currLocation;
+	public int getAvailableSeats() {
+		return availableSeats;
 	}
 
-	public void setCurrLocation(Location currLocation) {
-		this.currLocation = currLocation;
+	public void setAvailableSeats(int availableSeats) {
+		this.availableSeats = availableSeats;
 	}
 
 	public Date getLastMaintance() {
@@ -125,42 +123,22 @@ public class BusDetails {
 		this.onService = onService;
 	}
 
-	public ServiceDetails getServiceDetailsId() {
-		return serviceDetails;
+	public User getOperator() {
+		return operator;
 	}
 
-	public void setServiceDetailsId(ServiceDetails serviceDetails) {
-		this.serviceDetails = serviceDetails;
+	public void setOperator(User operator) {
+		this.operator = operator;
+	}
+
+	public List<Schedule> getSchedule() {
+		return schedule;
+	}
+
+	public void setSchedule(List<Schedule> schedule) {
+		this.schedule = schedule;
 	}
 	
-	public int getAvailableSeats() {
-		return availableSeats;
-	}
-
-	public void setAvailableSeats(int availableSeats) {
-		this.availableSeats = availableSeats;
-	}
-
-	public ServiceDetails getServiceDetails() {
-		return serviceDetails;
-	}
-
-	public void setServiceDetails(ServiceDetails serviceDetails) {
-		this.serviceDetails = serviceDetails;
-	}
-	
-	public double getBasePrice() {
-		return basePrice;
-	}
-
-	public void setBasePrice(double basePrice) {
-		this.basePrice = basePrice;
-	}
-
-	public void generateBusName() {
-		this.setBusName(this.busName + " " + this.busType + " - " + this.seatingType);
-		this.setAvailableSeats(seatCount);
-	}
 
 	
 }

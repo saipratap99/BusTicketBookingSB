@@ -39,7 +39,7 @@ public class BookingDetails {
 	private User user; 
 	
 	@ManyToOne
-	private ServiceDetails serviceDetails;
+	private Schedule schedule;
 
 	// created_at, updated_at
 	
@@ -107,14 +107,16 @@ public class BookingDetails {
 		this.user = user;
 	}
 
-	public ServiceDetails getServiceDetails() {
-		return serviceDetails;
+	public Schedule getSchedule() {
+		return schedule;
 	}
 
-	public void setServiceDetails(ServiceDetails serviceDetails) {
-		this.serviceDetails = serviceDetails;
+	public void setSchedule(Schedule schedule) {
+		this.schedule = schedule;
 	}
+
 	
+    
 }
 
 
