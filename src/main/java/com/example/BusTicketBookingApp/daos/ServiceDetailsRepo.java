@@ -11,6 +11,9 @@ import com.example.BusTicketBookingApp.models.ServiceDetails;
 public interface ServiceDetailsRepo extends JpaRepository<ServiceDetails, Integer> {
 	Optional<ServiceDetails> findByServiceName(String serviceName);
 	
+	@Query("from ServiceDetails where departureLocation.id = :departureId and arrivalLocation.id = :arrivalId")
+	List<ServiceDetails> finAllByDepartureLocationAndArrivalLocation(int departureId, int arrivalId);
+	
 	@Query("SELECT serviceName FROM ServiceDetails order by serviceName")
 	List<String> findAllProjectedByServiceName();
 }
