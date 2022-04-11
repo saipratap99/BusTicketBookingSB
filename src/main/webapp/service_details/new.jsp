@@ -41,31 +41,43 @@
                             </div>
                         </div>
                         <div class="grid-row departure">
-                        <div class="mb-3 grid-col date">
+                        
+                            <!-- 
+                            <div class="mb-3 grid-col date">
                                 <label for="departureDate" class="form-label">Departure Date</label>
                                 <input type="date" class="form-control" id="departureDate" name="departureDate">
-                                <jsp:include page="/locations/list.jsp">
-                                    <jsp:param name="locations" value="${locations}"/>
-                                </jsp:include>
                             </div>
+                            
                             <div class="mb-3 grid-col time">
                                 <label for="departureTime" class="form-label">Departure Time</label>
                                 <input type="time" class="form-control" id="departureTime" name="depTime">
                             </div>
+                            -->  
+                              
                             <div class="mb-3 grid-col location">
                                 <label for="departureLocation" class="form-label">Departure Location</label>
                                 <input list="locations" value="" class="col-sm-6 custom-select custom-select-sm form-control" name="depLocation" placeholder="Select location">
-                            </div>                   
+                                <jsp:include page="/locations/list.jsp">
+                                    <jsp:param name="locations" value="${locations}"/>
+                                </jsp:include>
+                            </div>
+                            
+                                            
                         </div>
                         <div class="grid-row arrival">
+                            
+                            <!-- 
                             <div class="mb-3 grid-col date">
                                 <label for="arrivalDate" class="form-label">Arrival Date</label>
                                 <input type="date" class="form-control" id="arrivalDate" name="arrivalDate">
                             </div>
+                            
                             <div class="mb-3 grid-col time">
                                 <label for="arrivalTime" class="form-label">Arrival Time</label>
                                 <input type="time" class="form-control" id="arrivalTime" name="arrTime">
                             </div>
+                            
+                            -->
                             <div class="mb-3 grid-col location">
                                 <label for="arrivalLocation" class="form-label">Arrival Location</label>
                                 <input list="locations" value="" class="col-sm-6 custom-select custom-select-sm form-control" name="arrLocation" placeholder="Select location">

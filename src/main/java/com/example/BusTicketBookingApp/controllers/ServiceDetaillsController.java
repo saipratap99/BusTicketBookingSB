@@ -1,5 +1,6 @@
 package com.example.BusTicketBookingApp.controllers;
 
+import java.security.Principal;
 import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -17,8 +18,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.example.BusTicketBookingApp.daos.LocationRepo;
 import com.example.BusTicketBookingApp.daos.ServiceDetailsRepo;
+import com.example.BusTicketBookingApp.daos.UserRepo;
 import com.example.BusTicketBookingApp.models.Location;
 import com.example.BusTicketBookingApp.models.ServiceDetails;
+import com.example.BusTicketBookingApp.models.User;
 import com.example.BusTicketBookingApp.projections.IdAndLocation;
 import com.example.BusTicketBookingApp.utils.BasicUtil;
 
@@ -33,6 +36,9 @@ public class ServiceDetaillsController {
 	ServiceDetailsRepo serviceDetailsRepo;
 	
 	@Autowired
+	UserRepo userRepo;
+	
+	@Autowired
 	BasicUtil basicUtil;
 	
 	@GetMapping("/new")
@@ -45,21 +51,23 @@ public class ServiceDetaillsController {
 	}
 	
 	@PostMapping("/create")
-	public String create(ServiceDetails serviceDetail, String depLocation, String arrLocation, String depTime, String arrTime, Model model) throws ParseException {
+	public String create(ServiceDetails serviceDetail, String depLocation, String arrLocation, Model model, Principal principal) throws ParseException {
 		
 //		serviceDetail.setDepartureTime(basicUtil.parseStringToSqlTime(depTime));
 //		serviceDetail.setArrivalTime(basicUtil.parseStringToSqlTime(arrTime));
-//		
-//		Optional<Location> departureLocation = locationRepo.findByLocationName(depLocation);
-//		Optional<Location> arrivalLocation = locationRepo.findByLocationName(arrLocation);
-//		
-//		if(departureLocation.isPresent() && arrivalLocation.isPresent()) {
-//			serviceDetail.setDepartureLocation(departureLocation.get());
-//			serviceDetail.setArrivalLocation(arrivalLocation.get());
-//			serviceDetail.genrateServiceName();
-//			serviceDetailsRepo.save(serviceDetail);
-//		}
-//		
+		
+		Optional<Location> departureLocation = locationRepo.findByLocationName(depLocation);
+		Optional<Location> arrivalLocation = locationRepo.findByLocationName(arrLocation);
+		
+		User user = userRepo.findByEmail(principal.getName());
+		
+		if(user != null && departureLocation.isPresent() && arrivalLocation.isPresent() && user.getRole().equals("ROLE_OPERATOR")) {
+			serviceDetail.setDepartureLocation(departureLocation.get());
+			serviceDetail.setArrivalLocation(arrivalLocation.get());
+			serviceDetail.genrateServiceName();
+			serviceDetailsRepo.save(serviceDetail);
+		}
+		
 		return "redirect:/service_details/new";
 	}
 }

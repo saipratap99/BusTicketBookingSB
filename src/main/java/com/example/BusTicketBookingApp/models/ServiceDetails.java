@@ -111,9 +111,7 @@ public class ServiceDetails {
 	}
 
 	
-
-	
-	public void genrateServiceName() {
+	public void genrateServiceName() { 
 		this.setServiceName(this.getServiceNumber() + " " + this.getDepartureLocation().getLocationName() + " - " + this.getArrivalLocation().getLocationName() + " " + this.getServiceType());
 	}
 

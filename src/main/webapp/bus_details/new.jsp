@@ -75,21 +75,6 @@
 						    <input type="date" class="form-control" id="onService" name="onService">
 						  </div>	
 					  </div>
-					  <div class="mb-3">
-					  	<label for="currLocation" class="form-label">Current Location</label>
-					  	<input list="locations" value="" class="col-sm-6 custom-select custom-select-sm form-control" name="location" placeholder="Select location">
-						<jsp:include page="/locations/list.jsp">
-					        <jsp:param name="locations" value="${locations}"/>
-					    </jsp:include>
-					  </div>
-					  <div class="mb-3">
-					  	<label for="serviceDetails" class="form-label">Service Details</label>
-					  	<input list="serviceDetails" value="" class="col-sm-6 custom-select custom-select-sm form-control" name="service" placeholder="Select service details">
-						<jsp:include page="/service_details/list.jsp">
-					        <jsp:param name="services" value="${services}"/>
-					    </jsp:include>
-					  </div>
-					  
 					  <button type="submit" class="btn btn-primary">Submit</button>
 					</form>
 				</fieldset>

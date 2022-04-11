@@ -50,6 +50,11 @@ public class BusDetails {
 	List<Schedule> schedule;
 	
 	// created_at, updated_at
+	
+	public void generateBusName() {
+		this.setBusName(this.operator.getOperator() + " " + this.getBusName() + " " + this.getSeatingType() + " " + this.getBusType());
+		this.setAvailableSeats(this.getSeatCount());
+	}
 
 	public int getId() {
 		return id;

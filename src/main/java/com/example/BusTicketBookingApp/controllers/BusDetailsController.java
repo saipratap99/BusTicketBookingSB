@@ -1,5 +1,6 @@
 package com.example.BusTicketBookingApp.controllers;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,9 +15,11 @@ import org.springframework.web.servlet.ModelAndView;
 import com.example.BusTicketBookingApp.daos.BusDetailsRepo;
 import com.example.BusTicketBookingApp.daos.LocationRepo;
 import com.example.BusTicketBookingApp.daos.ServiceDetailsRepo;
+import com.example.BusTicketBookingApp.daos.UserRepo;
 import com.example.BusTicketBookingApp.models.BusDetails;
 import com.example.BusTicketBookingApp.models.Location;
 import com.example.BusTicketBookingApp.models.ServiceDetails;
+import com.example.BusTicketBookingApp.models.User;
 
 @Controller
 @RequestMapping("/bus_details")
@@ -31,32 +34,30 @@ public class BusDetailsController {
 	@Autowired
 	BusDetailsRepo busDetailsRepo;
 	
+	@Autowired
+	UserRepo userRepo;
+	
 	@GetMapping("/new")
 	public String newBusDetails(Model model) {
-		ModelAndView newBusDetailsMv = new ModelAndView("/bus_details/new.jsp");
+//		ModelAndView newBusDetailsMv = new ModelAndView("/bus_details/new.jsp");
 		
-		List<String> locations = locationRepo.findAllProjectedByLocationName(); 
-
-		List<String> services = serviceDetailsRepo.findAllProjectedByServiceName();
-
-		model.addAttribute("locations", locations);
-		model.addAttribute("services", services);
+		
+//		List<String> services = serviceDetailsRepo.findAllProjectedByServiceName();
+//		model.addAttribute("services", services);
 		
 		return "/bus_details/new.jsp";
 	}
 	
 	@PostMapping("/create")
-	public String create(BusDetails busDetails,String location, String service, Model model) {
+	public String create(BusDetails busDetails, Model model, Principal principal) {
 		
-//		Optional<Location> currLocation = locationRepo.findByLocationName(location);
-//		Optional<ServiceDetails> serviceDetails = serviceDetailsRepo.findByServiceName(service); 
-//		
-//		if(currLocation.isPresent() && serviceDetails.isPresent()) {
-//			busDetails.setCurrLocation(currLocation.get());
-//			busDetails.setServiceDetails(serviceDetails.get());
-//			busDetails.generateBusName();
-//			busDetailsRepo.save(busDetails);
-//		}
+		User user = userRepo.findByEmail(principal.getName());
+		
+		if(user != null && user.getRole().equals("ROLE_OPERATOR")) {
+			busDetails.setOperator(user);
+			busDetails.generateBusName();
+			busDetailsRepo.save(busDetails);
+		}
 		
 		
 		return "/bus_details/new.jsp";
