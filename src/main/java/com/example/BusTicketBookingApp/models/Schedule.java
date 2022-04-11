@@ -27,10 +27,10 @@ public class Schedule {
 	@Column(name = "week_day")
 	private int weekDay;
 	
-	@Column(name = "departure_date")
+	@Column(name = "departure_date", nullable = true)
 	private Date departureDate;
 	
-	@Column(name = "arrival_date")
+	@Column(name = "arrival_date", nullable = true)
 	private Date arrivalDate;
     
 	@Column(name = "departure_time", nullable = false)
@@ -38,6 +38,9 @@ public class Schedule {
 	
 	@Column(name = "arrival_time", nullable = false)
 	private Time arrivalTime;
+	
+	
+	
 	
 	@ManyToOne(optional = false)
 	BusDetails busDetails;

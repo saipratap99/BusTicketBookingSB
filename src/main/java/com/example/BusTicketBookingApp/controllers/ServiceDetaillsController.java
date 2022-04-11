@@ -52,10 +52,7 @@ public class ServiceDetaillsController {
 	
 	@PostMapping("/create")
 	public String create(ServiceDetails serviceDetail, String depLocation, String arrLocation, Model model, Principal principal) throws ParseException {
-		
-//		serviceDetail.setDepartureTime(basicUtil.parseStringToSqlTime(depTime));
-//		serviceDetail.setArrivalTime(basicUtil.parseStringToSqlTime(arrTime));
-		
+				
 		Optional<Location> departureLocation = locationRepo.findByLocationName(depLocation);
 		Optional<Location> arrivalLocation = locationRepo.findByLocationName(arrLocation);
 		
