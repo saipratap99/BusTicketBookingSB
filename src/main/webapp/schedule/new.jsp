@@ -81,8 +81,8 @@
                             </div>    
                         
                             <div class="mb-3 grid-col">
-                                <label for="arrivalTime" class="form-label">Arrival Time</label>
-                                <input type="time" class="form-control" id="arrivalTime" name="arrTime">
+                                <label for="tripDuration" class="form-label">Duration</label>
+                                <input type="time" class="form-control" id="tripDuration" name="tripDuration">
                             </div>          
                         </div>
                         

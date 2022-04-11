@@ -36,8 +36,8 @@ public class Schedule {
 	@Column(name = "departure_time", nullable = false)
 	private Time departureTime;
 	
-	@Column(name = "arrival_time", nullable = false)
-	private Time arrivalTime;
+	@Column(name = "duration", nullable = false)
+	private int duration;
 	
 	
 	
@@ -91,12 +91,12 @@ public class Schedule {
 		this.departureTime = departureTime;
 	}
 
-	public Time getArrivalTime() {
-		return arrivalTime;
+	public int getDuration() {
+		return duration;
 	}
 
-	public void setArrivalTime(Time arrivalTime) {
-		this.arrivalTime = arrivalTime;
+	public void setDuration(int duration) {
+		this.duration = duration;
 	}
 
 	public BusDetails getBusDetails() {

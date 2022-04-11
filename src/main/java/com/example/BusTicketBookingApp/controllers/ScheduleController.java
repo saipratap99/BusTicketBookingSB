@@ -58,11 +58,13 @@ public class ScheduleController {
 	}
 	
 	@PostMapping("/create")
-	public String create(Schedule schedule, String bus, String service, String depTime, String arrTime, String week, Principal principal) throws ParseException {
+	public String create(Schedule schedule, String bus, String service, String depTime, String tripDuration, String week, Principal principal) throws ParseException {
 		
 		
 		schedule.setDepartureTime(basicUtil.parseStringToSqlTime(depTime));
-		schedule.setArrivalTime(basicUtil.parseStringToSqlTime(arrTime));
+		
+		int minutes = Integer.parseInt(tripDuration.split(":")[0])*60 + Integer.parseInt(tripDuration.split(":")[1]);
+		schedule.setDuration(minutes);
 		
 		User user = userRepo.findByEmail(principal.getName());
 		
