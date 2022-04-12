@@ -40,7 +40,15 @@ public class BookingsController {
 	}
 	
 	@GetMapping("/get")
-	public String getBuses(String depLocation, String arrLocation, Date date) {
+	public String getBuses(String depLocation, String arrLocation, Date date, Model model) {
+		
+		List<String> locations = locationRepo.findAllProjectedByLocationName();
+		
+		model.addAttribute("locations", locations);
+		model.addAttribute("arrLocation", arrLocation);
+		model.addAttribute("depLocation", depLocation);
+		model.addAttribute("date", date);
+		
 		
 		Optional<Location> departureLocation = locationRepo.findByLocationName(depLocation);
 		Optional<Location> arrivalLocation = locationRepo.findByLocationName(arrLocation);
@@ -54,18 +62,10 @@ public class BookingsController {
 				for(ServiceDetails service: serviceDetails) {
 					schedules.addAll(scheduleRepo.findAllByServiceDetailsAndWeekDay(service.getId(), date.getDay() + 1));
 				}
-				
-				for(Schedule s: schedules) {
-					System.out.println(s.getBusDetails().getBusName() + "  " + s.getBasePrice());
-				}
+				model.addAttribute("schedules", schedules);
 			}
 		}
-		
-		
-		
-		
-		return "/";
-//		return "/bookings/new.jsp";	
-//		return "/bookings/get_buses.jsp";
+			
+		return "/bookings/get_buses.jsp";
 	}
 }

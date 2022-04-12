@@ -40,20 +40,7 @@
                                 <input type="text" class="form-control" id="serviceType" name="serviceType">
                             </div>
                         </div>
-                        <div class="grid-row departure">
-                        
-                            <!-- 
-                            <div class="mb-3 grid-col date">
-                                <label for="departureDate" class="form-label">Departure Date</label>
-                                <input type="date" class="form-control" id="departureDate" name="departureDate">
-                            </div>
-                            
-                            <div class="mb-3 grid-col time">
-                                <label for="departureTime" class="form-label">Departure Time</label>
-                                <input type="time" class="form-control" id="departureTime" name="depTime">
-                            </div>
-                            -->  
-                              
+                        <div class="grid-row departure">      
                             <div class="mb-3 grid-col location">
                                 <label for="departureLocation" class="form-label">Departure Location</label>
                                 <input list="locations" value="" class="col-sm-6 custom-select custom-select-sm form-control" name="depLocation" placeholder="Select location">
