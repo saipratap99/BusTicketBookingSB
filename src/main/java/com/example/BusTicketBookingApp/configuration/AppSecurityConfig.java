@@ -47,6 +47,9 @@ public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
 		
 		http.csrf().disable()
 			.authorizeHttpRequests()
+			.antMatchers("/admin/**").hasRole("ADMIN")
+			.antMatchers("/bus_details/**", "/schedule/**", "/service_details/**").hasAnyRole("ADMIN", "OPERATOR")
+			.antMatchers("/bookings/**").hasAnyRole("ADMIN", "OPERATOR","USER")
 			.antMatchers("/authenticate","/users/*")
 			.permitAll()
 			.anyRequest()
