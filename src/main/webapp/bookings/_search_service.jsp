@@ -22,7 +22,6 @@
 		    <label class="visually-hidden" for="autoSizingInputGroup">Choose date</label>
 		    <input type="date" class="form-control" id="autoSizingInputGroup" name="date" value="${date}">
 		  </div>
-	
 		  <div class="col-auto">
 		    <button type="submit" class="btn btn-primary">Submit</button>
 		  </div>
