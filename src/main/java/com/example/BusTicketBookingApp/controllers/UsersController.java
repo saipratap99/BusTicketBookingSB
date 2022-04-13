@@ -21,10 +21,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.BusTicketBookingApp.daos.UserRepo;
 import com.example.BusTicketBookingApp.models.User;
@@ -59,7 +61,7 @@ public class UsersController {
 	PropertiesUtil propertiesUtil;
 	
 	@GetMapping("/new")
-	public ModelAndView newUser(String msg, String show, String status, Principal principal, HttpServletResponse response) throws IOException {
+	public ModelAndView newUser(@ModelAttribute("msg") String msg, @ModelAttribute("show") String show, @ModelAttribute("status") String status, Principal principal, HttpServletResponse response) throws IOException {
 		if(principal != null)
 			response.sendRedirect("/");
 		
@@ -75,10 +77,11 @@ public class UsersController {
 	
 	//	Binding result must come after Object to be validated
 	@PostMapping("/create")
-	public ModelAndView createUser(@Valid User user,
+	public String createUser(@Valid User user,
 							   BindingResult result,
 							   HttpServletResponse response,
-							   Principal principal) throws IOException {
+							   Principal principal, 
+							   RedirectAttributes redirectAttributes) throws IOException {
 
 		String msg = "", status = "danger";
 		
@@ -97,11 +100,15 @@ public class UsersController {
 			}
 		}
 		
-		return newUser(msg, "show", status, principal, response);
+		redirectAttributes.addFlashAttribute("msg", msg);
+		redirectAttributes.addFlashAttribute("status", status);
+		redirectAttributes.addFlashAttribute("show", "show");
+		
+		return "redirect:/users/new";
 	}
 	
 	@GetMapping("/login")
-	public ModelAndView newLogin(String msg, String status, String show, HttpServletResponse response, Principal principal) throws IOException {
+	public ModelAndView newLogin(@ModelAttribute("msg") String msg,@ModelAttribute("status") String status,@ModelAttribute("show") String show, HttpServletResponse response, Principal principal) throws IOException {
 		ModelAndView newUserLoginMV = new ModelAndView("/users/login.jsp");
 		
 		if(principal != null)
@@ -118,6 +125,7 @@ public class UsersController {
 	@PostMapping("/login")
 	public String authenticate(@RequestParam String email,
 									@RequestParam String password,
+									RedirectAttributes redirectAttributes,
 									HttpServletResponse resp, HttpServletRequest request) throws UsernameNotFoundException {
 		
 		try {
@@ -145,7 +153,11 @@ public class UsersController {
 			return "redirect:/";
 			
 		}catch(BadCredentialsException e) {
-			return "redirect:/users/login?msg=Invalid+email+or+password&status=danger&show=show";
+			redirectAttributes.addFlashAttribute("msg", "Invalid email or password");
+			redirectAttributes.addFlashAttribute("status","danger");
+			redirectAttributes.addFlashAttribute("show","show");
+			
+			return "redirect:/users/login";
 		}
 		
 	}
