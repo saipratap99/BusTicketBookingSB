@@ -9,9 +9,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-public class AppErrorController implements ErrorController{
-	
-	@RequestMapping("/error")
+//public class AppErrorController implements ErrorController{
+public class AppErrorController{	
+//	@RequestMapping("/error")
 	public String handleError(HttpServletRequest httpServletRequest) {
 		
 		Object status = httpServletRequest.getAttribute(RequestDispatcher.ERROR_STATUS_CODE);
@@ -22,7 +22,6 @@ public class AppErrorController implements ErrorController{
 			if(statusCode == HttpStatus.FORBIDDEN.value())
 				return "/errors/error-403.jsp";
 		}
-		
 		return "/errors/error.jsp";
 	}
 }
