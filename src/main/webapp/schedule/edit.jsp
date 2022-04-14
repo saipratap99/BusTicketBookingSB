@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>    
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>   
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>   
 
 <!DOCTYPE html>
 <html>
@@ -14,9 +15,9 @@
 		<jsp:include page="/layouts/navbar.jsp"></jsp:include>
 		<div class="content">
 			<div class="serviceDetailsForm w-50 mx-auto">
-				<form action="/schedule/create" method="post">
-                    <fieldset>
-                        <legend class="text-center text-primary">Schedule</legend>
+				<form:form action="/schedule/${id}" method="PUT">
+				    <fieldset>
+                        <legend class="text-center text-primary">Update Schedule</legend>
                         
                         <div class="mb-3">
                             <label for="serviceDetails" class="form-label">Service Details</label>
@@ -79,9 +80,9 @@
                                 <input type="number" class="form-control" id="basePrice" name="basePrice" value="${currBasePrice}">
                          </div>
                         
-                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <button type="submit" class="btn btn-primary">Update</button>
                     </fieldset>
-                </form>
+                </form:form>
 			</div>
 		</div>
 	</div>
