@@ -2,10 +2,10 @@ package com.example.BusTicketBookingApp.controllers;
 
 import java.io.IOException;
 import java.security.Principal;
+import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +32,7 @@ import com.example.BusTicketBookingApp.daos.UserRepo;
 import com.example.BusTicketBookingApp.models.User;
 import com.example.BusTicketBookingApp.services.CookieService;
 import com.example.BusTicketBookingApp.services.UserService;
+import com.example.BusTicketBookingApp.utils.BasicUtil;
 import com.example.BusTicketBookingApp.utils.JwtUtil;
 import com.example.BusTicketBookingApp.utils.PropertiesUtil;
 
@@ -59,6 +60,9 @@ public class UsersController {
 	
 	@Autowired
 	PropertiesUtil propertiesUtil;
+	
+	@Autowired
+	BasicUtil basicUtil;
 	
 	@GetMapping("/new")
 	public ModelAndView newUser(@ModelAttribute("msg") String msg, @ModelAttribute("show") String show, @ModelAttribute("status") String status, Principal principal, HttpServletResponse response) throws IOException {
@@ -110,14 +114,15 @@ public class UsersController {
 	@GetMapping("/login")
 	public ModelAndView newLogin(@ModelAttribute("msg") String msg,@ModelAttribute("status") String status,@ModelAttribute("show") String show, HttpServletResponse response, Principal principal) throws IOException {
 		ModelAndView newUserLoginMV = new ModelAndView("/users/login.jsp");
+
+		Optional<User> user = basicUtil.getUser(principal); 
 		
-		if(principal != null)
+		if(user.isPresent())
 			response.sendRedirect("/");
 		
 		newUserLoginMV.addObject("msg", msg);
 		newUserLoginMV.addObject("show", show);
 		newUserLoginMV.addObject("status", status);
-		newUserLoginMV.addObject("loggedIn", false);
 		
 		return newUserLoginMV;
 	}

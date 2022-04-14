@@ -1,5 +1,6 @@
 package com.example.BusTicketBookingApp.controllers;
 
+import java.security.Principal;
 import java.sql.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -19,9 +20,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.example.BusTicketBookingApp.daos.LocationRepo;
 import com.example.BusTicketBookingApp.daos.ScheduleRepo;
 import com.example.BusTicketBookingApp.daos.ServiceDetailsRepo;
+import com.example.BusTicketBookingApp.daos.UserRepo;
 import com.example.BusTicketBookingApp.models.Location;
 import com.example.BusTicketBookingApp.models.Schedule;
 import com.example.BusTicketBookingApp.models.ServiceDetails;
+import com.example.BusTicketBookingApp.models.User;
+import com.example.BusTicketBookingApp.utils.BasicUtil;
 
 @Controller
 @RequestMapping("/bookings")
@@ -36,8 +40,13 @@ public class BookingsController {
 	@Autowired
 	ScheduleRepo scheduleRepo;
 	
+	@Autowired
+	BasicUtil basicUtil;
+	
 	@GetMapping("/new")
-	public String newBooking(Model model) {
+	public String newBooking(Model model, Principal principal) {
+		
+		basicUtil.addNavBarAttributesToModel(principal, model);
 		
 		List<String> locations = locationRepo.findAllProjectedByLocationName();
 		model.addAttribute("locations", locations);
@@ -45,7 +54,7 @@ public class BookingsController {
 	}
 	
 	@GetMapping("/get")
-	public String getBuses(String depLocation, String arrLocation, Date date,Model model, RedirectAttributes redirectAttributes) {
+	public String getBuses(String depLocation, String arrLocation, Date date,Model model, RedirectAttributes redirectAttributes, Principal principal) {
 		
 		List<String> locations = locationRepo.findAllProjectedByLocationName();
 		
@@ -64,11 +73,15 @@ public class BookingsController {
 			}
 		}
 		
+		basicUtil.addNavBarAttributesToModel(principal, model);
+		
 		return "redirect:/bookings/new.jsp";
 	}
 	
 	@GetMapping("/get/{depLocation}/{depId}/{arrLocation}/{arrId}/{date}")
-	public String availableBuses(@PathVariable String depLocation,@PathVariable int depId,@PathVariable String arrLocation,@PathVariable int arrId,@PathVariable Date date, Model model) {
+	public String availableBuses(@PathVariable String depLocation,@PathVariable int depId,@PathVariable String arrLocation,@PathVariable int arrId,@PathVariable Date date, Model model, Principal principal) {
+		
+		basicUtil.addNavBarAttributesToModel(principal, model);
 		
 		List<ServiceDetails> serviceDetails = null;
 		List<Schedule> schedules = new LinkedList<>();

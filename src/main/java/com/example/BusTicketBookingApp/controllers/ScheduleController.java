@@ -47,12 +47,14 @@ public class ScheduleController {
 	ScheduleRepo scheduleRepo;
 	
 	@GetMapping("/new")
-	public String newSchedule(Model model){
+	public String newSchedule(Principal principal, Model model){
 		
 		List<BusDetails> buses = busDetailsRepo.findAll();
 		List<String> services = serviceDetailsRepo.findAllProjectedByServiceName();
 		model.addAttribute("services", services);
 		model.addAttribute("buses", buses);
+		
+		basicUtil.addNavBarAttributesToModel(principal, model);
 		
 		return "/schedule/new.jsp";
 	}
@@ -79,6 +81,6 @@ public class ScheduleController {
 			scheduleRepo.save(schedule);
 		}
 			
-		return "/schedule/new.jsp";
+		return "redirect:/schedule/new.jsp";
 	}
 }

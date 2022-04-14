@@ -20,6 +20,7 @@ import com.example.BusTicketBookingApp.models.BusDetails;
 import com.example.BusTicketBookingApp.models.Location;
 import com.example.BusTicketBookingApp.models.ServiceDetails;
 import com.example.BusTicketBookingApp.models.User;
+import com.example.BusTicketBookingApp.utils.BasicUtil;
 
 @Controller
 @RequestMapping("/bus_details")
@@ -37,29 +38,26 @@ public class BusDetailsController {
 	@Autowired
 	UserRepo userRepo;
 	
+	@Autowired
+	BasicUtil basicUtil;
+	
 	@GetMapping("/new")
-	public String newBusDetails(Model model) {
-//		ModelAndView newBusDetailsMv = new ModelAndView("/bus_details/new.jsp");
-		
-		
-//		List<String> services = serviceDetailsRepo.findAllProjectedByServiceName();
-//		model.addAttribute("services", services);
-		
+	public String newBusDetails(Principal principal, Model model) {
+		basicUtil.addNavBarAttributesToModel(principal, model);
 		return "/bus_details/new.jsp";
 	}
 	
 	@PostMapping("/create")
 	public String create(BusDetails busDetails, Model model, Principal principal) {
 		
-		User user = userRepo.findByEmail(principal.getName());
+		Optional<User> user = basicUtil.getUser(principal);
 		
-		if(user != null && user.getRole().equals("ROLE_OPERATOR")) {
-			busDetails.setOperator(user);
+		if(user.isPresent() && user.get().getRole().equals("ROLE_OPERATOR")) {
+			busDetails.setOperator(user.get());
 			busDetails.generateBusName();
 			busDetailsRepo.save(busDetails);
 		}
 		
-		
-		return "/bus_details/new.jsp";
+		return "redirect:/bus_details/new.jsp";
 	}
 }

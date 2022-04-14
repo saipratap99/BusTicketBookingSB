@@ -16,21 +16,46 @@
 		          <a class="nav-link active" aria-current="page" href="/">Home</a>
 		        </li>
 		        
-		        <c:choose>
-   					<c:when test="${loggedIn == true}">
+		        	
+		        	<c:if test="${role != null}">
+   						<li class="nav-item">
+				          <a class="nav-link" aria-current="page" href="/bookings/new">Booking</a>
+				        </li>
+   					</c:if>
+		        	
+		        	<c:if test="${isOperator == true || isAdmin == true}">
+ 
+				        <li class="nav-item">
+				          <a class="nav-link" aria-current="page" href="/bus_details/new">Buses</a>
+				        </li>
+				        <li class="nav-item">
+				          <a class="nav-link" aria-current="page" href="/service_details/new">Services</a>
+				        </li>
+				        <li class="nav-item">
+				          <a class="nav-link" aria-current="page" href="/schedule/new">Schedules</a>
+				        </li>
+   					</c:if>
+   					
+   					<c:if test="${isAdmin == true}">
+   						<li class="nav-item">
+				          <a class="nav-link" aria-current="page" href="/admin">Admin</a>
+				        </li>
+   					</c:if>
+   					
+   					<c:if test="${role != null}">
    						<li class="nav-item">
 				          <a class="nav-link" aria-current="page" href="/users/logout">Log out</a>
 				        </li>
-   					</c:when>
-   					<c:otherwise>
+   					</c:if>
+   					<c:if test="${role == null}">
    						<li class="nav-item">
 				          <a class="nav-link" aria-current="page" href="/users/new">Sign Up</a>
 				        </li>
 				        <li class="nav-item">
 				          <a class="nav-link" aria-current="page" href="/users/login">Log in</a>
 				        </li>
-    				</c:otherwise>
-   				</c:choose>
+    				</c:if>
+   				
 		      </ul>
 		    </div>
 		  </div>

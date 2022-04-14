@@ -42,10 +42,11 @@ public class ServiceDetaillsController {
 	BasicUtil basicUtil;
 	
 	@GetMapping("/new")
-	public String newBusDetails(Model model) {
+	public String newBusDetails(Model model, Principal principal) {
 		List<String> locations = locationRepo.findAllProjectedByLocationName(); 
 
 		model.addAttribute("locations", locations);
+		basicUtil.addNavBarAttributesToModel(principal, model);
 		
 		return "/service_details/new.jsp";
 	}
