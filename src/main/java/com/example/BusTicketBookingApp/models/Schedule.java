@@ -38,10 +38,7 @@ public class Schedule {
 	
 	@Column(name = "duration", nullable = false)
 	private int duration;
-	
-	
-	
-	
+
 	@ManyToOne(optional = false)
 	BusDetails busDetails;
 	

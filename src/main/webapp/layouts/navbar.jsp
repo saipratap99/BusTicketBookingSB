@@ -32,7 +32,7 @@
 				          <a class="nav-link" aria-current="page" href="/service_details/new">Services</a>
 				        </li>
 				        <li class="nav-item">
-				          <a class="nav-link" aria-current="page" href="/schedule/new">Schedules</a>
+				          <a class="nav-link" aria-current="page" href="/schedule/">Schedules</a>
 				        </li>
    					</c:if>
    					

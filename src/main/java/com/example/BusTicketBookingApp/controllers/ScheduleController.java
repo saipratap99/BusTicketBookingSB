@@ -108,6 +108,29 @@ public class ScheduleController {
 		return "/schedule/edit.jsp";
 	}
 	
+	@GetMapping("/{id}")
+	public String getSchedule(@PathVariable int id,Model model, Principal principal) throws ParseException {
+		Optional<Schedule> schedule = scheduleRepo.findById(id);
+		
+		if(!schedule.isPresent())
+			return "redirect:/schedule/";
+		
+		String weeks[] = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
+		
+		model.addAttribute("schedule", schedule);
+		model.addAttribute("currServiceDetails", schedule.get().getServiceDetails().getServiceName());
+		model.addAttribute("currBusDetails", schedule.get().getBusDetails().getBusName());
+		model.addAttribute("currWeekDay", weeks[schedule.get().getWeekDay() - 1]);
+		model.addAttribute("currDep", schedule.get().getDepartureTime().toString());
+		model.addAttribute("currDuration", (basicUtil.parseStringToSqlTime(schedule.get().getDuration()/60 + ":" + schedule.get().getDuration()%60)).toString());
+		model.addAttribute("currBasePrice", schedule.get().getBasePrice());
+		
+		basicUtil.addNavBarAttributesToModel(principal, model);
+		
+		return "/schedule/show.jsp";
+				
+	}
+	
 	@PostMapping(path = "/{id}")
 	public String updateSchedule(@PathVariable int id, Schedule schedule, String bus, String service, String depTime, String tripDuration, String week, Principal principal) throws ParseException {
 		
@@ -143,6 +166,7 @@ public class ScheduleController {
 			scheduleRepo.save(schedule);
 			scheduleOptional = Optional.ofNullable(schedule);
 		}
+		
 		
 		return scheduleOptional;
 	}

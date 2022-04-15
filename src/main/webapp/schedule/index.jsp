@@ -78,7 +78,9 @@
 			    </c:forEach>
 			  </tbody>
 			</table>
+			<a class="btn btn-primary" href="/schedule/new">New Schedule</a>
 		</div>
+		
 	</div>
 	
 </body>
