@@ -4,7 +4,7 @@
 
 <!DOCTYPE html>
 <html>
-	<c:set var="title" scope="session" value="New Bus Details"/>
+	<c:set var="title" scope="session" value="Update Bus Details"/>
 	<jsp:include page="/layouts/_head_tag.jsp">
 		<jsp:param value="${title}" name="title"/>
 	</jsp:include>
@@ -14,21 +14,21 @@
 		<jsp:include page="/layouts/navbar.jsp"></jsp:include>
 		<div class="content">
 			<div class="userForm w-50 mx-auto">
-				<form action="/bus_details/create" method="post">
+				<form action="/bus_details/${id}" method="post">
 				<fieldset>
-					  <legend class="text-center text-primary">Bus Details</legend>
+					  <legend class="text-center text-primary">Update Bus Details</legend>
 					  <div class="mb-3">
 					    <label for="model" class="form-label">Bus Model</label>
-					    <input type="text" class="form-control" id="busName" name="model">
+					    <input type="text" class="form-control" id="busName" name="model" value="${busDetails.getModel()}">
 					  </div>
 					  <div class="grid-row">
 						  <div class="mb-3">
 						    <label for="busRegNumber" class="form-label">Bus Registration Number</label>
-						    <input type="text" class="form-control" id="busRegNumber" name="busRegNumber">
+						    <input type="text" class="form-control" id="busRegNumber" name="busRegNumber" value="${busDetails.getBusRegNumber()}">
 						  </div>
 						  <div class="mb-3">
 						    <label for="busType" class="form-label">Bus Type</label>
-						    <input list="busTypes" value="" class="col-sm-6 custom-select custom-select-sm form-control" name="busType" placeholder="Select Bus Type">
+						    <input list="busTypes" value="${busDetails.getBusType()}" class="col-sm-6 custom-select custom-select-sm form-control" name="busType" placeholder="Select Bus Type">
 							<datalist id="busTypes">
 							    <option value="Non - AC">
 							    <option value="AC">
@@ -38,7 +38,7 @@
 					  <div class="grid-row">
 						  <div class="mb-3">
 						    <label for="seatingType" class="form-label">Seating Type</label>
-						    <input list="seatingTypes" value="" class="col-sm-6 custom-select custom-select-sm form-control" name="seatingType" placeholder="Select Seating Type">
+						    <input list="seatingTypes" value="${busDetails.getSeatingType()}" class="col-sm-6 custom-select custom-select-sm form-control" name="seatingType" placeholder="Select Seating Type">
 							<datalist id="seatingTypes">
 							    <option value="Seater">
 							    <option value="Pushback">
@@ -48,20 +48,20 @@
 						  </div>
 						  <div class="mb-3">
 						    <label for="seatCount" class="form-label">Seating Count</label>
-						    <input type="number" class="form-control" id="seatCount" name="seatCount">
+						    <input type="number" class="form-control" id="seatCount" name="seatCount" value="${busDetails.getSeatCount()}">
 						  </div>
 					  </div>
 					  <div class="grid-row">
 						  <div class="mb-3">
 						    <label for="lastMaintance" class="form-label">Last Maintenance</label>
-						    <input type="date" class="form-control" id="lastMaintenance" name="lastMaintance">
+						    <input type="date" class="form-control" id="lastMaintenance" name="lastMaintance" value="${busDetails.getLastMaintance()}">
 						  </div>
 						  <div class="mb-3">
 						    <label for="onService" class="form-label">On Service</label>
-						    <input type="date" class="form-control" id="onService" name="onService">
+						    <input type="date" class="form-control" id="onService" name="onService" value="${busDetails.getOnService()}">
 						  </div>	
 					  </div>
-					  <button type="submit" class="btn btn-primary">Submit</button>
+					  <button type="submit" class="btn btn-primary">Update</button>
 					</form>
 				</fieldset>
 				  

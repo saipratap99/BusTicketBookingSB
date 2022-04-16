@@ -19,6 +19,9 @@ public class BusDetails {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
 	
+	@Column(name = "model", nullable = false)
+	private String model;
+	
 	@Column(name = "bus_name", nullable = false)
 	private String busName;
 	
@@ -34,9 +37,6 @@ public class BusDetails {
 	@Column(name = "seating_type", nullable = false)
 	private String seatingType;
 		
-	@Column(name = "available_seats", nullable = false)
-	private int availableSeats;
-	
 	@Column(name = "last_maintance", nullable = false)
 	private Date lastMaintance;
 	
@@ -49,11 +49,19 @@ public class BusDetails {
 	@OneToMany(mappedBy = "busDetails")
 	List<Schedule> schedule;
 	
+	
 	// created_at, updated_at
 	
 	public void generateBusName() {
-		this.setBusName(this.operator.getOperator() + " " + this.getBusName() + " " + this.getSeatingType() + " " + this.getBusType());
-		this.setAvailableSeats(this.getSeatCount());
+		this.setBusName(this.operator.getOperator() + " " + this.getModel() + " " + this.getSeatingType() + " " + this.getBusType());
+	}
+
+	public String getModel() {
+		return model;
+	}
+
+	public void setModel(String model) {
+		this.model = model;
 	}
 
 	public int getId() {
@@ -102,14 +110,6 @@ public class BusDetails {
 
 	public void setSeatingType(String seatingType) {
 		this.seatingType = seatingType;
-	}
-
-	public int getAvailableSeats() {
-		return availableSeats;
-	}
-
-	public void setAvailableSeats(int availableSeats) {
-		this.availableSeats = availableSeats;
 	}
 
 	public Date getLastMaintance() {

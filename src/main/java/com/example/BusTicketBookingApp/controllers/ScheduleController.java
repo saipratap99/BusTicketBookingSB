@@ -52,7 +52,7 @@ public class ScheduleController {
 
 	
 	@GetMapping("/")
-	public String getSchedule(Principal principal, Model model) {
+	public String getSchedules(Principal principal, Model model) {
 		List<Schedule> schedules = scheduleRepo.findAll();
 		basicUtil.addNavBarAttributesToModel(principal, model);
 		model.addAttribute("schedules",schedules);

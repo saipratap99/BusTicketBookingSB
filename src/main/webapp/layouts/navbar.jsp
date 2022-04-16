@@ -26,7 +26,7 @@
 		        	<c:if test="${isOperator == true || isAdmin == true}">
  
 				        <li class="nav-item">
-				          <a class="nav-link" aria-current="page" href="/bus_details/new">Buses</a>
+				          <a class="nav-link" aria-current="page" href="/bus_details/">Buses</a>
 				        </li>
 				        <li class="nav-item">
 				          <a class="nav-link" aria-current="page" href="/service_details/new">Services</a>
