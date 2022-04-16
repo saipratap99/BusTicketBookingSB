@@ -78,6 +78,19 @@ public class ServiceDetaillsController {
 		return "/service_details/index.jsp";
 	}
 	
+	@GetMapping("/{id}")
+	public String show(@PathVariable int id, Model model, Principal principal) {
+		Optional<ServiceDetails> serviceDetails = serviceDetailsRepo.findById(id);		
+		System.out.println("sasa");
+		
+		if(!serviceDetails.isPresent())
+			return "redirect:/service_details/";
+		
+		model.addAttribute("serviceDetails", serviceDetails.get());
+		basicUtil.addNavBarAttributesToModel(principal, model);
+		return "/service_details/show.jsp";
+	}
+	
 	@GetMapping("/new")
 	public String newBusDetails(Model model, Principal principal) {
 		List<String> locations = locationRepo.findAllProjectedByLocationName(); 

@@ -29,7 +29,7 @@
 				          <a class="nav-link" aria-current="page" href="/bus_details/">Buses</a>
 				        </li>
 				        <li class="nav-item">
-				          <a class="nav-link" aria-current="page" href="/service_details/new">Services</a>
+				          <a class="nav-link" aria-current="page" href="/service_details/">Services</a>
 				        </li>
 				        <li class="nav-item">
 				          <a class="nav-link" aria-current="page" href="/schedule/">Schedules</a>

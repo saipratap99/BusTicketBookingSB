@@ -12,7 +12,10 @@
 	<div class="container-fluid">
 		<jsp:include page="/layouts/message.jsp"></jsp:include>
 		<jsp:include page="/layouts/navbar.jsp"></jsp:include>
-		<h2>Welcome to Online Bus Ticket Booking</h2>
+		<div class="text-center">
+			<h2>Welcome to Online Bus Ticket Booking</h2>
+			<a href="/bookings/new" class="btn btn-primary btn-lg">Book Tickets Now</a>
+		</div>
 	</div>
 	
 </body>
