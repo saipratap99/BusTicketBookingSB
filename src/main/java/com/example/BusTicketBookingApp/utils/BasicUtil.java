@@ -9,6 +9,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.BusTicketBookingApp.daos.UserRepo;
 import com.example.BusTicketBookingApp.models.User;
@@ -59,6 +60,18 @@ public class BasicUtil {
 				return "Saturday";
 		}
 		return "";
+	}
+	
+	public void addMsgToModel(String msg, String status, String show, Model model) {
+		model.addAttribute("msg", msg);
+		model.addAttribute("status", status);
+		model.addAttribute("show", show);
+	}
+	
+	public void addMsgToRedirectFlash(String msg, String status, String show, RedirectAttributes redirectAttributes) {
+		redirectAttributes.addFlashAttribute("msg", msg);
+		redirectAttributes.addFlashAttribute("status", status);
+		redirectAttributes.addFlashAttribute("show", show);
 	}
 	
 	

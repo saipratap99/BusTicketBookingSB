@@ -14,10 +14,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.BusTicketBookingApp.daos.LocationRepo;
 import com.example.BusTicketBookingApp.daos.ServiceDetailsRepo;
@@ -46,8 +47,9 @@ public class ServiceDetaillsController {
 	BasicUtil basicUtil;
 	
 	@GetMapping("/")
-	public String index(Model model, Principal principal) {
+	public String index(Model model, Principal principal, @ModelAttribute("msg") String msg, @ModelAttribute("show") String show, @ModelAttribute("status") String status) {
 		basicUtil.addNavBarAttributesToModel(principal, model);
+		basicUtil.addMsgToModel(msg, status, show, model);
 		
 		List<Map<String, String>> servicesMap = new LinkedList<>();
 		List<ServiceDetails> serviceDetails = serviceDetailsRepo.findAll();
@@ -92,18 +94,23 @@ public class ServiceDetaillsController {
 	}
 	
 	@GetMapping("/new")
-	public String newBusDetails(Model model, Principal principal) {
+	public String newBusDetails(Model model, Principal principal, @ModelAttribute("msg") String msg, @ModelAttribute("show") String show, @ModelAttribute("status") String status) {
 		List<String> locations = locationRepo.findAllProjectedByLocationName(); 
 
+		
+		model.addAttribute("msg", msg);
+		model.addAttribute("status", status);
+		model.addAttribute("show", show);
+		
 		model.addAttribute("locations", locations);
 		basicUtil.addNavBarAttributesToModel(principal, model);
-		
+		basicUtil.addMsgToModel(msg, status, show, model);
 		return "/service_details/new.jsp";
 	}
 	
 	@PostMapping("/create")
-	public String create(ServiceDetails serviceDetail, String depLocation, String arrLocation, Model model, Principal principal) {
-				
+	public String create(ServiceDetails serviceDetail, String depLocation, String arrLocation, Model model, Principal principal, RedirectAttributes redirectAttributes) {
+		
 		Optional<Location> departureLocation = locationRepo.findByLocationName(depLocation);
 		Optional<Location> arrivalLocation = locationRepo.findByLocationName(arrLocation);
 		
@@ -114,6 +121,7 @@ public class ServiceDetaillsController {
 			serviceDetail.setArrivalLocation(arrivalLocation.get());
 			serviceDetail.genrateServiceName();
 			serviceDetailsRepo.save(serviceDetail);
+			basicUtil.addMsgToRedirectFlash(serviceDetail.getServiceName() + " added successfully!", "success", "show", redirectAttributes);
 		}
 		
 		return "redirect:/service_details/new";
@@ -135,7 +143,7 @@ public class ServiceDetaillsController {
 	}
 	
 	@PostMapping("/{id}")
-	public String update(@PathVariable int id, ServiceDetails serviceDetail, String depLocation, String arrLocation, Model model, Principal principal) {
+	public String update(@PathVariable int id, ServiceDetails serviceDetail, String depLocation, String arrLocation, Model model, Principal principal, RedirectAttributes redirectAttributes) {
 		
 		Optional<ServiceDetails> existingServiceDetails = serviceDetailsRepo.findById(id);		
 		if(!existingServiceDetails.isPresent())
@@ -152,6 +160,7 @@ public class ServiceDetaillsController {
 			serviceDetail.setArrivalLocation(arrivalLocation.get());
 			serviceDetail.genrateServiceName();
 			serviceDetailsRepo.save(serviceDetail);
+			basicUtil.addMsgToRedirectFlash(serviceDetail.getServiceName() + " updated successfully!", "success", "show", redirectAttributes);
 		}
 		
 		return "redirect:/service_details/";

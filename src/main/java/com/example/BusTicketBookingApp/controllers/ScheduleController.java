@@ -14,12 +14,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.BusTicketBookingApp.daos.BusDetailsRepo;
 import com.example.BusTicketBookingApp.daos.ScheduleRepo;
@@ -52,15 +54,17 @@ public class ScheduleController {
 
 	
 	@GetMapping("/")
-	public String getSchedules(Principal principal, Model model) {
+	public String getSchedules(Principal principal, Model model, @ModelAttribute("msg") String msg, @ModelAttribute("show") String show, @ModelAttribute("status") String status) {
 		List<Schedule> schedules = scheduleRepo.findAll();
 		basicUtil.addNavBarAttributesToModel(principal, model);
+		basicUtil.addMsgToModel(msg, status, show, model);
+		
 		model.addAttribute("schedules",schedules);
 		return "/schedule/index.jsp";
 	}
 	
 	@GetMapping("/new")
-	public String newSchedule(Principal principal, Model model){
+	public String newSchedule(Principal principal, Model model, @ModelAttribute("msg") String msg, @ModelAttribute("show") String show, @ModelAttribute("status") String status){
 		
 		List<BusDetails> buses = busDetailsRepo.findAll();
 		List<String> services = serviceDetailsRepo.findAllProjectedByServiceName();
@@ -68,14 +72,17 @@ public class ScheduleController {
 		model.addAttribute("buses", buses);
 		
 		basicUtil.addNavBarAttributesToModel(principal, model);
+		basicUtil.addMsgToModel(msg, status, show, model);
 		
 		return "/schedule/new.jsp";
 	}
 	
 	@PostMapping("/create")
-	public String create(Schedule schedule, String bus, String service, String depTime, String tripDuration, String week, Principal principal) throws ParseException {
+	public String create(Schedule schedule, String bus, String service, String depTime, String tripDuration, String week, Principal principal, RedirectAttributes redirectAttributes) throws ParseException {
 		
-		createScheduleObject(schedule, depTime, tripDuration, service, bus, week, principal);
+		Optional<Schedule> scheduleOptional = createScheduleObject(schedule, depTime, tripDuration, service, bus, week, principal);
+		if(scheduleOptional.isPresent())
+			basicUtil.addMsgToRedirectFlash("Schedule " + scheduleOptional.get().getId()  + "added successfully", "success", "show", redirectAttributes);
 		
 		return "redirect:/schedule/new.jsp";
 		
@@ -132,14 +139,17 @@ public class ScheduleController {
 	}
 	
 	@PostMapping(path = "/{id}")
-	public String updateSchedule(@PathVariable int id, Schedule schedule, String bus, String service, String depTime, String tripDuration, String week, Principal principal) throws ParseException {
+	public String updateSchedule(@PathVariable int id, Schedule schedule, String bus, String service, String depTime, String tripDuration, String week, Principal principal, RedirectAttributes redirectAttributes) throws ParseException {
 		
 		Optional<Schedule> exsitingSchedule = scheduleRepo.findById(id);
 		
 		if(!exsitingSchedule.isPresent())
 			return "redirect:/schedule/";
 		
-		createScheduleObject(schedule, depTime, tripDuration, service, bus, week, principal);
+		Optional<Schedule> scheduleOptional = createScheduleObject(schedule, depTime, tripDuration, service, bus, week, principal);
+		if(scheduleOptional.isPresent())
+			basicUtil.addMsgToRedirectFlash("Schedule " + scheduleOptional.get().getId() + " updated successfully", "success", "show", redirectAttributes);
+		
 		
 		return "redirect:/schedule/";
 	}

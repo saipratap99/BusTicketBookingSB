@@ -12,10 +12,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.BusTicketBookingApp.daos.BusDetailsRepo;
 import com.example.BusTicketBookingApp.daos.LocationRepo;
@@ -47,9 +49,10 @@ public class BusDetailsController {
 	BasicUtil basicUtil;
 	
 	@GetMapping("/")
-	public String getBuses(Model model, Principal principal) {
+	public String getBuses(Model model, Principal principal, @ModelAttribute("msg") String msg, @ModelAttribute("show") String show, @ModelAttribute("status") String status) {
 		
 		basicUtil.addNavBarAttributesToModel(principal, model);
+		basicUtil.addMsgToModel(msg, status, show, model);
 		
 		List<Map<String, String>> busesMap = new LinkedList<>();
 		List<BusDetails> busDetails = busDetailsRepo.findAll();
@@ -97,13 +100,14 @@ public class BusDetailsController {
 	
 	
 	@GetMapping("/new")
-	public String newBusDetails(Principal principal, Model model) {
+	public String newBusDetails(Principal principal, Model model, @ModelAttribute("msg") String msg, @ModelAttribute("show") String show, @ModelAttribute("status") String status) {
+		basicUtil.addNavBarAttributesToModel(principal, model);
 		basicUtil.addNavBarAttributesToModel(principal, model);
 		return "/bus_details/new.jsp";
 	}
 	
 	@PostMapping("/create")
-	public String create(BusDetails busDetails, Model model, Principal principal) {
+	public String create(BusDetails busDetails, Model model, Principal principal, RedirectAttributes redirectAttributes) {
 		
 		Optional<User> user = basicUtil.getUser(principal);
 		
@@ -111,6 +115,7 @@ public class BusDetailsController {
 			busDetails.setOperator(user.get());
 			busDetails.generateBusName();
 			busDetailsRepo.save(busDetails);
+			basicUtil.addMsgToRedirectFlash(busDetails.getBusName() + " added successfully!", "success", "show", redirectAttributes);
 		}
 		
 		return "redirect:/bus_details/new.jsp";
@@ -128,7 +133,7 @@ public class BusDetailsController {
 	}
 	
 	@PostMapping("/{id}")
-	public String update(@PathVariable int id, BusDetails busDetails,Model model, Principal principal) {
+	public String update(@PathVariable int id, BusDetails busDetails,Model model, Principal principal, RedirectAttributes redirectAttributes) {
 		basicUtil.addNavBarAttributesToModel(principal, model);
 		
 		Optional<User> user = basicUtil.getUser(principal);
@@ -139,6 +144,7 @@ public class BusDetailsController {
 			busDetails.setOperator(user.get());
 			busDetails.generateBusName();
 			busDetailsRepo.save(busDetails);
+			basicUtil.addMsgToRedirectFlash(busDetails.getBusName() + " updated successfully!", "success", "show", redirectAttributes);
 		}
 		
 		return "redirect:/bus_details/";
