@@ -82,6 +82,20 @@ public class BusDetailsController {
 		return "/bus_details/index.jsp";
 	}
 	
+	@GetMapping("/{id}")
+	public String showBusDetails(@PathVariable int id ,Model model, Principal principal) {
+		
+		basicUtil.addNavBarAttributesToModel(principal, model);
+		
+		Optional<BusDetails> busDetails = busDetailsRepo.findById(id);
+		
+		if(busDetails.isPresent())
+			model.addAttribute("busDetails", busDetails.get());
+		
+		return "/bus_details/show.jsp";
+	}
+	
+	
 	@GetMapping("/new")
 	public String newBusDetails(Principal principal, Model model) {
 		basicUtil.addNavBarAttributesToModel(principal, model);
