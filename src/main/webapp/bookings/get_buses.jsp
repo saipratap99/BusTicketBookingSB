@@ -18,24 +18,21 @@
 				<jsp:param name="arrLocation" value="${arrLocation}"/>
 				<jsp:param name="date" value="${date}"/>
 			</jsp:include>
-			<div class="result mt-4">
+			<div class="result mt-4 w-75 mx-auto">
 				<c:forEach items="${schedules}" var="schedule">
-					<div class="bus ">
+					<div class="bus mt-2 p-3 border border-secondary">
 						<h4><strong>${schedule.getBusDetails().getBusName()}</strong></h4>
-						<div class="d-flex justify-content-between">
+						<div class="d-flex justify-content-between align-items-center">
 							<div class="col">
 								<strong>Departure time</strong>: ${schedule.getDepartureTime()}
 							</div>			
 							<div class="col">
 								<strong>Duaration</strong>: ${Math.floor(schedule.getDuration()/60)} hrs ${schedule.getDuration()%60} mns
-							</div>			
+							</div>					
 							<div class="col">
-								<strong>Arrival time</strong>: 
-							</div>						
-							<div>
 								<strong> Price: </strong> ${schedule.getBasePrice()} 
 							</div>
-							<div>
+							<div class="col">
 								<a class="btn btn-primary">Select Seats</a>
 							</div>
 						</div>

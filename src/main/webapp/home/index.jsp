@@ -17,6 +17,5 @@
 			<a href="/bookings/new" class="btn btn-primary btn-lg">Book Tickets Now</a>
 		</div>
 	</div>
-	
 </body>
 </html>
