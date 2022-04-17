@@ -88,4 +88,35 @@ public class AdminController {
 		
 		return "redirect:/admin/users";
 	}
+	
+	@GetMapping("/{id}/remove_as_operator")
+	public String removeOperatorForm(@PathVariable int id, Model model, Principal principal, @ModelAttribute("msg") String msg, @ModelAttribute("show") String show, @ModelAttribute("status") String status) {
+		
+		basicUtil.addNavBarAttributesToModel(principal, model);
+		basicUtil.addMsgToModel(msg, status, show, model);
+		
+		Optional<User> user = userRepo.findById(id);
+		if(user.isPresent()) {
+			model.addAttribute("id", id);
+			model.addAttribute("name", user.get().getFirstName() + " " + (user.get().getLastName() != null ? user.get().getLastName() : ""));
+		}else 
+			return "redirect:/admin/users";
+		
+		return "/admin/remove_as_operator.jsp";
+	}
+	
+	@PostMapping("/{id}/remove_as_operator")
+	public String removeOperator(@PathVariable int id, Model model, Principal principal, RedirectAttributes redirectAttributes) {
+		
+		Optional<User> currentUser = basicUtil.getUser(principal);
+		Optional<User> user = userRepo.findById(id);
+		if("ROLE_ADMIN".equals(currentUser.get().getRole()) && user.isPresent()) {
+			user.get().setRole("ROLE_USER");
+			user.get().setOperator(null);
+			userRepo.save(user.get());
+			basicUtil.addMsgToRedirectFlash(user.get().getFirstName() + " Role has been changed to user", "success", "show", redirectAttributes);
+		}
+		
+		return "redirect:/admin/users";
+	}
 }

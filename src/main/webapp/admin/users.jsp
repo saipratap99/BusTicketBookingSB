@@ -33,7 +33,6 @@
 				    	    	</c:when>
 				    	    	<c:when test="${entrySet.getKey() == 'Update'}">
 				    	    		<td>
-				    	    			
 						      			<a class="btn btn-${userMap.get("Role") == 'ROLE_OPERATOR' ? 'danger' : 'warning'} text-light" href="${entrySet.getValue()}">${ userMap.get("Role") == 'ROLE_OPERATOR' ? 'Remove as Operator' : 'Make as Operator'}</a>
 						      		</td>
 				    	    	</c:when>
