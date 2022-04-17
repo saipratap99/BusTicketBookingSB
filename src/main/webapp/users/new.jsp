@@ -49,5 +49,6 @@
 			</div>
 		</div>
 	</div>
+	<script type="text/javascript" src="/js/validateUser.js"></script>
 </body>
 </html>
