@@ -98,6 +98,7 @@ public class UsersController {
 			else if(!user.getPassword().equals(user.getConfirmPassword()))
 				msg += "Password must be same";
 			else {
+				user.setRole("ROLE_USER");
 				userService.save(user);
 				msg += "User " + user.getFirstName() + " has been added!";
 				status = "success";

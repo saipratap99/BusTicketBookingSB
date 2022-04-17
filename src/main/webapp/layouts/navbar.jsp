@@ -38,7 +38,7 @@
    					
    					<c:if test="${isAdmin == true}">
    						<li class="nav-item">
-				          <a class="nav-link" aria-current="page" href="/admin">Admin</a>
+				          <a class="nav-link" aria-current="page" href="/admin/users">Admin</a>
 				        </li>
    					</c:if>
    					
